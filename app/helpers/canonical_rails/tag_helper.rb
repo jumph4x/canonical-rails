@@ -6,7 +6,7 @@ module CanonicalRails
     end
     
     def trailing_slash_if_needed
-      "/" if trailing_slash_needed? and request.path.present?
+      "/" if trailing_slash_needed? and request.path != '/'
     end
     
     def canonical_host
@@ -14,7 +14,7 @@ module CanonicalRails
     end
     
     def canonical_href
-      "#{request.protocol}#{canonical_host}/#{request.path}#{trailing_slash_if_needed}#{whitelisted_query_string}"
+      "#{request.protocol}#{canonical_host}#{request.path}#{trailing_slash_if_needed}#{whitelisted_query_string}"
     end
     
     def canonical_tag
