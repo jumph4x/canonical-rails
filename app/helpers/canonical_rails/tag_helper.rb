@@ -13,8 +13,12 @@ module CanonicalRails
       CanonicalRails.host || request.host
     end
     
-    def canonical_tag
+    def canonical_href
       "#{request.protocol}#{canonical_host}/#{request.path}#{trailing_slash_if_needed}#{whitelisted_query_string}"
+    end
+    
+    def canonical_tag
+      tag(:link, :href => canonical_href, :rel => 'canonical')
     end
     
     def whitelisted_params

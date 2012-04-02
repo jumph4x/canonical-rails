@@ -1,4 +1,4 @@
-require 'spec_helper'
+crequire 'spec_helper'
 
 describe CanonicalRails::TagHelper do
   
@@ -37,7 +37,7 @@ describe CanonicalRails::TagHelper do
       end
       
       it 'should output a canonical tag w/ trailing slash' do
-        helper.canonical_tag.last.should == '/'
+        helper.canonical_href.last.should == '/'
       end
     end
     
@@ -51,7 +51,7 @@ describe CanonicalRails::TagHelper do
       end
       
       it 'should output a canonical tag w/out trailing slash' do
-        helper.canonical_tag.last.should_not == '/'
+        helper.canonical_href.last.should_not == '/'
       end
     end
   end
@@ -90,7 +90,7 @@ describe CanonicalRails::TagHelper do
         end
         
         it 'should output a canonical tag w/ trailing slash' do
-          helper.canonical_tag.should include('/?')
+          helper.canonical_href.should include('/?')
         end
       end
       
@@ -99,7 +99,7 @@ describe CanonicalRails::TagHelper do
           controller.request.path_parameters = {'controller' => 'our_resources', 'action' => 'show'}
         end
         it 'should output a canonical tag w/out trailing slash' do
-          helper.canonical_tag.should_not include('/?')
+          helper.canonical_href.should_not include('/?')
         end
       end
     end
