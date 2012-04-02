@@ -16,7 +16,8 @@ I've seen a lot of folks do more harm by neglecting canonicalization altogether 
 ## Usage
 
 First, generate the config
-  rails g canonical_rails:install
+
+    rails g canonical_rails:install
   
 Then find it in config/initializers/ as canonical_rails.rb
 
