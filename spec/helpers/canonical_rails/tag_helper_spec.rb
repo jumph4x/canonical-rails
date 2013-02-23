@@ -1,4 +1,4 @@
-crequire 'spec_helper'
+require 'spec_helper'
 
 describe CanonicalRails::TagHelper do
   
@@ -26,7 +26,7 @@ describe CanonicalRails::TagHelper do
     it 'should return a nil whitelisted query string' do
       helper.whitelisted_query_string.should be_nil
     end
-    
+
     describe 'on a collection action' do
       before(:each) do
         controller.request.path_parameters = {'controller' => 'our_resources', 'action' => 'index'}
@@ -38,6 +38,16 @@ describe CanonicalRails::TagHelper do
       
       it 'should output a canonical tag w/ trailing slash' do
         helper.canonical_href.last.should == '/'
+      end
+
+      context "with the html extension in the url" do
+        before(:each) do
+          controller.request.path += ".html"
+        end
+
+        it "removes it" do
+          helper.canonical_href.should_not include(".html")
+        end
       end
     end
     
@@ -52,6 +62,16 @@ describe CanonicalRails::TagHelper do
       
       it 'should output a canonical tag w/out trailing slash' do
         helper.canonical_href.last.should_not == '/'
+      end
+
+      context "with the html extension in the url" do
+        before(:each) do
+          controller.request.path += ".html"
+        end
+
+        it "removes it" do
+          helper.canonical_href.should_not include(".html")
+        end
       end
     end
   end
