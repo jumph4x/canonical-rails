@@ -1,7 +1,7 @@
 CanonicalRails
 ==============
 
-This project rocks and uses MIT-LICENSE, foh sho. 
+This project rocks and uses MIT-LICENSE, foh sho. Works with rails 3 and 4.
 
 See The [Google Webmaster Blog Page About Specifying Canonical](http://googlewebmastercentral.blogspot.com/2009/02/specify-your-canonical.html) or the [Google Support About rel="canonical"](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=139394) as a primer. 
 
