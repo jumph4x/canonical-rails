@@ -11,7 +11,7 @@ A number of articles exist explaining the issue concisely and at length:
 
 ## Challenge
 
-I've seen a lot of folks do more harm by neglecting canonicalization altogether than by applying to narrowly and conservatively, so here is an attempt to let people start modeslty without spending too much time on it and whitelist parameters as they need to.
+I've seen a lot of folks do more harm by neglecting canonicalization altogether than by applying to narrowly and conservatively, so here is an attempt to let people start modestly without spending too much time on it and whitelist parameters as they need to.
 
 ## Install
 
