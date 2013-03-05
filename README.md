@@ -15,14 +15,14 @@ I've seen a lot of folks do more harm by neglecting canonicalization altogether 
 
 ## Install
 
-    gem 'canonical-rails', :git => 'git://github.com/jumph4x/rails-canonical.git'
-    
+    gem 'canonical-rails', github: 'jumph4x/canonical-rails'
+
 ## Usage
 
 First, generate the config
 
     rails g canonical_rails:install
-  
+
 Then find it in config/initializers/ as canonical_rails.rb
 
 Finally, include the canonical_tag helper in your views.
