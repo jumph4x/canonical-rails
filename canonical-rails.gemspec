@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = CanonicalRails::VERSION
   s.authors     = ["Denis Ivanov"]
   s.email       = ["visible@jumph4x.net"]
-  s.homepage    = "http://jumph4x.net"
+  s.homepage    = "https://github.com/jumph4x/canonical-rails"
   s.summary     = "Simple and configurable Rails canonical ref tag helper"
   s.description = "Configurable, but assumes a conservative strategy by default with a goal to solve many search engine index problems: multiple hostnames, inbound links with arbitrary parameters, trailing slashes. "
 
