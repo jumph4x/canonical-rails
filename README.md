@@ -26,4 +26,7 @@ First, generate the config
 
 Then find it in config/initializers/ as canonical_rails.rb
 
-Finally, include the canonical_tag helper in your views.
+Finally, include the canonical_tag helper in your views:
+```ruby
+  <%= canonical_tag -%>
+```
