@@ -124,4 +124,24 @@ describe CanonicalRails::TagHelper do
       end
     end
   end
+
+  describe 'when host is specified' do
+    before(:each) do
+      controller.request.path_parameters = {'controller' => 'our_resources', 'action' => 'show'}
+    end
+
+    describe '#canonical_href' do
+      subject{ helper.canonical_href('www.foobar.net') }
+      it 'uses provided host' do
+        should eq('http://www.foobar.net/our_resources')
+      end
+    end
+
+    describe '#canonical_tag' do
+      subject{ helper.canonical_tag('www.foobar.net') }
+      it 'uses provided host' do
+        should include('www.foobar.net')
+      end
+    end
+  end
 end
