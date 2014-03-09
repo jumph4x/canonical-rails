@@ -4,7 +4,7 @@ describe CanonicalRails::TagHelper do
   
   before(:each) do
     controller.request.host = 'www.alternative-domain.com'
-    controller.request.path = 'our_resources'
+    controller.request.path = '/our_resources'
   end
   
   after(:each) do
