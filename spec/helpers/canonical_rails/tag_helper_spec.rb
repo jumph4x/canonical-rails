@@ -4,7 +4,7 @@ describe CanonicalRails::TagHelper do
   
   before(:each) do
     controller.request.host = 'www.alternative-domain.com'
-    controller.request.path = 'our_resources'
+    controller.request.path = '/our_resources'
   end
   
   after(:each) do
@@ -121,6 +121,26 @@ describe CanonicalRails::TagHelper do
         it 'should output a canonical tag w/out trailing slash' do
           helper.canonical_href.should_not include('/?')
         end
+      end
+    end
+  end
+
+  describe 'when host is specified' do
+    before(:each) do
+      controller.request.path_parameters = {'controller' => 'our_resources', 'action' => 'show'}
+    end
+
+    describe '#canonical_href' do
+      subject{ helper.canonical_href('www.foobar.net') }
+      it 'uses provided host' do
+        should eq('http://www.foobar.net/our_resources')
+      end
+    end
+
+    describe '#canonical_tag' do
+      subject{ helper.canonical_tag('www.foobar.net') }
+      it 'uses provided host' do
+        should include('www.foobar.net')
       end
     end
   end
