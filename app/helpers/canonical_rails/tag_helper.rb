@@ -1,5 +1,6 @@
 module CanonicalRails
   module TagHelper
+    require 'cgi'
 
     def trailing_slash_needed?
       CanonicalRails.sym_collection_actions.include? request.params['action'].to_sym
@@ -33,7 +34,7 @@ module CanonicalRails
     end
 
     def whitelisted_query_string
-      "?#{whitelisted_params.map{ |key, val| "#{key}=#{val}" }.join('&')}" if whitelisted_params.present?
+      "?#{whitelisted_params.map{ |key, val| "#{CGI.escape(key)}=#{CGI.escape(val)}" }.join('&')}" if whitelisted_params.present?
     end
   end
 end
