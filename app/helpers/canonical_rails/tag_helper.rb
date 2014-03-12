@@ -18,11 +18,11 @@ module CanonicalRails
     end
 
     def canonical_href(host=canonical_host)
-      "#{request.protocol}#{host}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}"
+      raw "#{request.protocol}#{host}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}"
     end
 
     def canonical_tag(host=canonical_host)
-      tag(:link, :href => raw(canonical_href(host)), :rel => 'canonical')
+      tag(:link, :href => canonical_href(host), :rel => 'canonical')
     end
 
     def whitelisted_params
@@ -33,7 +33,7 @@ module CanonicalRails
     end
 
     def whitelisted_query_string
-      "?#{whitelisted_params.map{ |key, val| "#{key}=#{val}" }.join('&')}" if whitelisted_params.present?
+      "?#{whitelisted_params.map{ |key, val| "#{CGI.escape(key)}=#{CGI.escape(val)}" }.join('&')}" if whitelisted_params.present?
     end
   end
 end

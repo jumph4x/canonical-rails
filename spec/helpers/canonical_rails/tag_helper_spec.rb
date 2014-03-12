@@ -93,7 +93,7 @@ describe CanonicalRails::TagHelper do
     describe 'with parameters' do
       before(:each) do
         CanonicalRails.whitelisted_parameters = ['page', 'keywords']
-        controller.request.stub!(:query_parameters).and_return({'i-will' => 'kill-your-seo', 'page' => '5', 'keywords' => 'dragons'})
+        controller.request.stub!(:query_parameters).and_return({'i-will' => 'kill-your-seo', 'page' => '5', 'keywords' => '"here be dragons"'})
         controller.request.path_parameters = {'controller' => 'our_resources', 'action' => 'index'}
       end
 
@@ -103,11 +103,15 @@ describe CanonicalRails::TagHelper do
 
       it 'should include whitelisted params' do
         helper.whitelisted_params['page'].should == '5'
-        helper.whitelisted_params['keywords'].should == 'dragons'
+        helper.whitelisted_params['keywords'].should == '"here be dragons"'
+      end
+
+      it 'should escape whitelisted params properly' do
+        helper.whitelisted_query_string.should == '?page=5&keywords=%22here+be+dragons%22'
       end
 
       it 'should output whitelisted params using proper syntax (?key=value&key=value)' do
-        helper.canonical_tag.should == '<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=dragons" rel="canonical" />'
+        helper.canonical_tag.should == '<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22" rel="canonical" />'
       end
 
       describe 'on a collection action' do
