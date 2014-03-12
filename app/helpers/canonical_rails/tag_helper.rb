@@ -1,6 +1,5 @@
 module CanonicalRails
   module TagHelper
-    require 'cgi'
 
     def trailing_slash_needed?
       CanonicalRails.sym_collection_actions.include? request.params['action'].to_sym
@@ -19,11 +18,11 @@ module CanonicalRails
     end
 
     def canonical_href(host=canonical_host)
-      "#{request.protocol}#{host}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}"
+      raw "#{request.protocol}#{host}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}"
     end
 
     def canonical_tag(host=canonical_host)
-      tag(:link, :href => raw(canonical_href(host)), :rel => 'canonical')
+      tag(:link, :href => canonical_href(host), :rel => 'canonical')
     end
 
     def whitelisted_params
