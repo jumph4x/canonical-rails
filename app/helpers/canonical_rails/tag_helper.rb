@@ -33,7 +33,7 @@ module CanonicalRails
     end
 
     def whitelisted_query_string
-      "?#{whitelisted_params.map{ |key, val| "#{CGI.escape(key)}=#{CGI.escape(val)}" }.join('&')}" if whitelisted_params.present?
+      "?" + Rack::Utils.build_nested_query(whitelisted_params) if whitelisted_params.present?
     end
   end
 end
