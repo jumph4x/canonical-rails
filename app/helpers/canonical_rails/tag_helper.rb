@@ -13,12 +13,16 @@ module CanonicalRails
       request.path.sub(/\.html$/, '')
     end
 
+    def canonical_protocol
+      CanonicalRails.protocol || request.protocol
+    end
+
     def canonical_host
       CanonicalRails.host || request.host
     end
 
     def canonical_href(host=canonical_host)
-      raw "#{request.protocol}#{host}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}"
+      raw "#{canonical_protocol}#{host}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}"
     end
 
     def canonical_tag(host=canonical_host)

@@ -27,6 +27,10 @@ describe CanonicalRails::TagHelper do
       helper.whitelisted_query_string.should be_nil
     end
 
+    it 'should infer the protocol by looking at the request' do
+      helper.canonical_protocol.should == 'http://'
+    end
+
     describe 'on a collection action' do
       before(:each) do
         controller.request.path_parameters = {'controller' => 'our_resources', 'action' => 'index'}
@@ -88,6 +92,32 @@ describe CanonicalRails::TagHelper do
       it 'should infer the domain name by looking at the request' do
         helper.canonical_host.should == 'www.mywebstore.com'
       end
+    end
+
+    describe 'with a specified protocol' do
+      before(:each) do
+        CanonicalRails.protocol = 'https://'
+        controller.request.path_parameters = {'controller' => 'our_resources', 'action' => 'show'}
+      end
+
+      after(:each) do
+        CanonicalRails.protocol = nil
+      end
+
+      describe '#canonical_href' do
+        subject{ helper.canonical_href }
+        it 'uses specified protocol' do
+          should eq('https://www.mywebstore.com/our_resources')
+        end
+      end
+
+      describe '#canonical_tag' do
+        subject{ helper.canonical_tag }
+        it 'uses specified protocol' do
+          should include('https://')
+        end
+      end
+
     end
 
     describe 'with parameters' do
