@@ -47,7 +47,7 @@ module CanonicalRails
       # Rack 1.6.0 has it
       # https://github.com/rack/rack/blob/65a7104b6b3e9ecd8f33c63a478ab9a33a103507/test/spec_utils.rb#L251
 
-      "?" + Rack::Utils.build_nested_query(Hash[whitelisted_params.map{|k,v| [k,v.to_s]}]) if whitelisted_params.present?
+      "?" + Rack::Utils.build_nested_query(Hash[whitelisted_params.map{|k,v| v.is_a?(Numeric) ? [k,v.to_s] : [k,v]}]) if whitelisted_params.present?
     end
   end
 end
