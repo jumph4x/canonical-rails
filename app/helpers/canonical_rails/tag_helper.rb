@@ -37,7 +37,17 @@ module CanonicalRails
     end
 
     def whitelisted_query_string
-      "?" + Rack::Utils.build_nested_query(whitelisted_params) if whitelisted_params.present?
+      # Rack 1.4.5 fails to handle params that are not strings
+      # So if
+      #     my_hash = { "a" => 1, "b" => 2}
+      # Rack::Utils.build_nested_query(my_hash) would return
+      #     "a&b"
+      # Rack 1.4.5 did not have a test case for this scenario
+      # https://github.com/rack/rack/blob/9939d40a5e23dcb058751d1029b794aa2f551900/test/spec_utils.rb#L222
+      # Rack 1.6.0 has it
+      # https://github.com/rack/rack/blob/65a7104b6b3e9ecd8f33c63a478ab9a33a103507/test/spec_utils.rb#L251
+
+      "?" + Rack::Utils.build_nested_query(Hash[whitelisted_params.map{|k,v| v.is_a?(Numeric) ? [k,v.to_s] : [k,v]}]) if whitelisted_params.present?
     end
   end
 end
