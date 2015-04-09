@@ -30,3 +30,8 @@ Finally, include the canonical_tag helper in your views:
 ```ruby
   <%= canonical_tag -%>
 ```
+
+## Cred
+
+A project by [Downshift Labs](http://downshiftlabs.com), Ruby on Rails,
+Performance tuning and Spree Commerce projects.
