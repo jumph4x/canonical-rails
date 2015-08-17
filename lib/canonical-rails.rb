@@ -20,9 +20,6 @@ module CanonicalRails
   mattr_accessor :collection_actions
   @@collection_actions = [:index]
 
-  mattr_accessor :member_actions
-  @@member_actions = [:show]
-
   mattr_accessor :whitelisted_parameters
   @@whitelisted_parameters = []
 
