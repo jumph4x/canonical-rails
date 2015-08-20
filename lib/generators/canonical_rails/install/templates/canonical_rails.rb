@@ -1,6 +1,10 @@
 # Do yourself a favor and set these up right when you install the engine. 
 
 CanonicalRails.setup do |config|
+
+  # Force the protocol. If you do not specify, the protocol will be based on the incoming request's protocol.
+
+  config.protocol#= 'https://'
   
   # This is the main host, not just the TLD, omit slashes and protocol. If you have more than one, pick the one you want to rank in search results.
   
