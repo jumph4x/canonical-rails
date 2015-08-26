@@ -28,7 +28,7 @@ module CanonicalRails
   end
 
   def self.sym_whitelisted_parameters
-    @@sym_whitelisted_actions ||= self.whitelisted_parameters.map(&:to_sym)
+    @@sym_whitelisted_parameters ||= self.whitelisted_parameters.map(&:to_sym)
   end
 
 end
