@@ -22,7 +22,7 @@ module CanonicalRails
     end
 
     def canonical_href(host=canonical_host)
-      raw "#{canonical_protocol}#{host}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}"
+      raw "#{canonical_protocol}#{host}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}".downcase
     end
 
     def canonical_tag(host=canonical_host)
