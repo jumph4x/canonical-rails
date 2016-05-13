@@ -1,12 +1,11 @@
 module CanonicalRails
   module TagHelper
-
     def trailing_slash_needed?
       CanonicalRails.sym_collection_actions.include? request.params['action'].to_sym
     end
 
     def trailing_slash_if_needed
-      "/" if trailing_slash_needed? and request.path != '/'
+      "/" if trailing_slash_needed? && request.path != '/'
     end
 
     def path_without_html_extension
@@ -26,13 +25,12 @@ module CanonicalRails
     end
 
     def canonical_tag(host=canonical_host)
-      tag(:link, :href => canonical_href(host), :rel => 'canonical')
+      tag(:link, href: canonical_href(host), rel: :canonical)
     end
 
     def whitelisted_params
       request.params.select do |key, value|
-        value.present? and
-        CanonicalRails.sym_whitelisted_parameters.include? key.to_sym
+        value.present? && CanonicalRails.sym_whitelisted_parameters.include?(key.to_sym)
       end
     end
 
@@ -47,7 +45,7 @@ module CanonicalRails
       # Rack 1.6.0 has it
       # https://github.com/rack/rack/blob/65a7104b6b3e9ecd8f33c63a478ab9a33a103507/test/spec_utils.rb#L251
 
-      "?" + Rack::Utils.build_nested_query(Hash[whitelisted_params.map{|k,v| v.is_a?(Numeric) ? [k,v.to_s] : [k,v]}]) if whitelisted_params.present?
+      "?" + Rack::Utils.build_nested_query(Hash[whitelisted_params.map { |k, v| v.is_a?(Numeric) ? [k, v.to_s] : [k, v] }]) if whitelisted_params.present?
     end
   end
 end
