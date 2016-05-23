@@ -1,6 +1,7 @@
 CanonicalRails
 ==============
 [![Dependency Status](https://gemnasium.com/jumph4x/canonical-rails.png)](https://gemnasium.com/jumph4x/canonical-rails)
+[![Build Status](https://travis-ci.org/jumph4x/canonical-rails.svg?branch=master)](https://travis-ci.org/jumph4x/canonical-rails)
 
 This project rocks and uses MIT-LICENSE, foh sho. Works with rails 3 and 4.
 
