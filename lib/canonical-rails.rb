@@ -14,6 +14,9 @@ module CanonicalRails
   mattr_accessor :host
   @@host = nil
 
+  mattr_accessor :port
+  @@port = nil
+
   mattr_accessor :protocol
   @@protocol = nil
 
