@@ -20,12 +20,17 @@ module CanonicalRails
       CanonicalRails.host || request.host
     end
 
-    def canonical_href(host=canonical_host)
-      raw "#{canonical_protocol}#{host}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}".downcase
+    def canonical_port
+      (CanonicalRails.port || request.port).to_i
     end
 
-    def canonical_tag(host=canonical_host)
-      tag(:link, href: canonical_href(host), rel: :canonical)
+    def canonical_href(host = canonical_host, port = canonical_port)
+      port = port.present? && port.to_i != 80 ? ":#{port}" : ''
+      raw "#{canonical_protocol}#{host}#{port}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}".downcase
+    end
+
+    def canonical_tag(host = canonical_host, port = canonical_port)
+      tag(:link, href: canonical_href(host, port), rel: :canonical)
     end
 
     def whitelisted_params

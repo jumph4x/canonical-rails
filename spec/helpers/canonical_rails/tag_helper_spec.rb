@@ -13,8 +13,13 @@ describe CanonicalRails::TagHelper, type: :helper do
 
   # Default behavior
   describe 'w/ default config' do
-    it 'should take the domain from the config' do
+    it 'should infer the domain name by looking at the request' do
       expect(helper.canonical_host).to eq 'www.alternative-domain.com'
+    end
+
+    it 'should infer the domain name by looking at the request' do
+      allow(controller.request).to receive(:port) { 3000 }
+      expect(helper.canonical_port).to eq 3000
     end
 
     it 'should return no whitelisted params' do
@@ -82,11 +87,36 @@ describe CanonicalRails::TagHelper, type: :helper do
   describe 'w/ custom config' do
     before(:each) do
       CanonicalRails.host = 'www.mywebstore.com'
+      CanonicalRails.port = nil
     end
 
     describe 'on both types of actions' do
-      it 'should infer the domain name by looking at the request' do
+      it 'should take the domain from the config' do
         expect(helper.canonical_host).to eq 'www.mywebstore.com'
+      end
+
+      it 'should take the port from the config' do
+        CanonicalRails.port = 3000
+        expect(helper.canonical_port).to eq 3000
+      end
+    end
+
+    describe 'with host and port' do
+      before(:each) do
+        CanonicalRails.port = 3000
+        controller.request.path_parameters = { controller: :our_resources, action: :show }
+      end
+
+      describe '#canonical_href' do
+        it 'uses specified host and protocol' do
+          expect(helper.canonical_href).to eq 'http://www.mywebstore.com:3000/our_resources'
+        end
+      end
+
+      describe '#canonical_tag' do
+        it 'uses specified host and protocol' do
+          expect(helper.canonical_tag).to include 'http://www.mywebstore.com:3000/our_resources'
+        end
       end
     end
 
@@ -180,6 +210,28 @@ describe CanonicalRails::TagHelper, type: :helper do
 
       it 'uses provided host' do
         is_expected.to include 'www.foobar.net'
+      end
+    end
+  end
+
+  describe 'when host and port are specified' do
+    before(:each) do
+      controller.request.path_parameters = { controller: :our_resources, action: :show }
+    end
+
+    describe '#canonical_href' do
+      subject { helper.canonical_href('www.foobar.net', 3000) }
+
+      it 'uses provided host' do
+        is_expected.to eq 'http://www.foobar.net:3000/our_resources'
+      end
+    end
+
+    describe '#canonical_tag' do
+      subject { helper.canonical_tag('www.foobar.net', 3000) }
+
+      it 'uses provided host' do
+        is_expected.to include 'www.foobar.net:3000'
       end
     end
   end
