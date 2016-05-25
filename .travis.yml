@@ -6,7 +6,7 @@ rvm:
   - 2.2.5
   - 2.3.1
 env:
-  - "RAILS_VERSION=3.2.22.2"
+  - "RAILS_VERSION=4.1.15"
   - "RAILS_VERSION=4.2.6"
   - "RAILS_VERSION=5.0.0.rc1"
   - "RAILS_VERSION=master"
