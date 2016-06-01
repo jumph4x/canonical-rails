@@ -124,6 +124,7 @@ describe CanonicalRails::TagHelper, type: :helper do
       before(:each) do
         CanonicalRails.protocol = 'https://'
         controller.request.path_parameters = { controller: :our_resources, action: :show }
+        allow(controller.request).to receive(:port) { 443 }
       end
 
       after(:each) do
