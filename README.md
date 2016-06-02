@@ -3,13 +3,15 @@ CanonicalRails
 [![Dependency Status](https://gemnasium.com/jumph4x/canonical-rails.png)](https://gemnasium.com/jumph4x/canonical-rails)
 [![Build Status](https://travis-ci.org/jumph4x/canonical-rails.svg?branch=master)](https://travis-ci.org/jumph4x/canonical-rails)
 
-This project rocks and uses MIT-LICENSE, foh sho. Works with rails 3 and 4.
-
 A number of articles exist explaining the issue concisely and at length:
 
  *   [Google Webmaster Blog Page About Specifying Canonical](http://googlewebmastercentral.blogspot.com/2009/02/specify-your-canonical.html)
  *   [Google Support About rel="canonical"](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=139394)
  *   [Google Support About Canonicalization](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=139066)
+
+## Guide
+
+Take a look at this blog post that can guide you through the idea and the setup: [Easily add canonical URLs to your Rails app](http://blog.planetargon.com/entries/2014/4/4/easily-add-canonical-urls-to-your-rails-app)
 
 ## Challenge
 
