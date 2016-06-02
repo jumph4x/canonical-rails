@@ -33,5 +33,4 @@ module CanonicalRails
   def self.sym_whitelisted_parameters
     @@sym_whitelisted_parameters ||= self.whitelisted_parameters.map(&:to_sym)
   end
-
 end
