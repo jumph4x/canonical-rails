@@ -9,9 +9,9 @@ rvm:
 gemfile:
   - gemfiles/rails_4_1.gemfile
   - gemfiles/rails_4_2.gemfile
-  - gemfiles/rails_5_0_0_rc1.gemfile
+  - gemfiles/rails_5_0.gemfile
 
 matrix:
   exclude:
     - rvm: 2.1.10
-      gemfile: gemfiles/rails_5_0_0_rc1.gemfile
+      gemfile: gemfiles/rails_5_0.gemfile
