@@ -17,7 +17,7 @@ describe CanonicalRails::TagHelper, type: :helper do
       expect(helper.canonical_host).to eq 'www.alternative-domain.com'
     end
 
-    it 'should infer the domain name by looking at the request' do
+    it 'should infer the port by looking at the request' do
       allow(controller.request).to receive(:port) { 3000 }
       expect(helper.canonical_port).to eq 3000
     end
