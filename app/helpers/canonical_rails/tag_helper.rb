@@ -35,7 +35,7 @@ module CanonicalRails
     end
 
     def whitelisted_params
-      request.params.select do |key, value|
+      params.select do |key, value|
         value.present? && CanonicalRails.sym_whitelisted_parameters.include?(key.to_sym)
       end
     end
