@@ -151,7 +151,7 @@ describe CanonicalRails::TagHelper, type: :helper do
     describe 'with parameters' do
       before(:each) do
         CanonicalRails.whitelisted_parameters = ['page', 'keywords', 'search']
-        allow_any_instance_of(controller.request.class).to receive(:query_parameters).and_return({ 'i-will' => 'kill-your-seo', page: '5', keywords: '"here be dragons"', search: { super: 'special' } })
+        allow_any_instance_of(controller.class).to receive(:params).and_return({ 'i-will' => 'kill-your-seo', 'page' => '5', 'keywords' => '"here be dragons"', 'search' => { 'super' => 'special' } })
         controller.request.path_parameters = { controller: :our_resources, action: :index }
       end
 
