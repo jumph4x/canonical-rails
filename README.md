@@ -15,7 +15,7 @@ Take a look at this blog post that can guide you through the idea and the setup:
 
 ## Challenge
 
-I've seen a lot of folks do more harm by neglecting canonicalization altogether than by applying to narrowly and conservatively, so here is an attempt to let people start modestly without spending too much time on it and whitelist parameters as they need to.
+I've seen a lot of folks do more harm by neglecting canonicalization altogether than by applying too narrowly and conservatively, so here is an attempt to let people start modestly without spending too much time on it and whitelist parameters as they need to.
 
 ## Install
 
