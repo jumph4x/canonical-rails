@@ -236,4 +236,19 @@ describe CanonicalRails::TagHelper, type: :helper do
       end
     end
   end
+
+  describe 'when opengraph url tag is turned on' do
+    before(:each) do
+      CanonicalRails.opengraph_url = true
+      controller.request.path_parameters = { controller: :our_resources, action: :show }
+    end
+
+    describe '#canonical_tag' do
+      subject { helper.canonical_tag }
+
+      it 'outputs an og:url meta tag' do
+        is_expected.to include 'property="og:url"'
+      end
+    end
+  end
 end

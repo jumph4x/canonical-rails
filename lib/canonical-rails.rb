@@ -26,6 +26,9 @@ module CanonicalRails
   mattr_accessor :whitelisted_parameters
   @@whitelisted_parameters = []
 
+  mattr_accessor :opengraph_url
+  @@opengraph_url = false
+
   def self.sym_collection_actions
     @@sym_collection_actions ||= self.collection_actions.map(&:to_sym)
   end

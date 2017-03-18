@@ -31,7 +31,13 @@ module CanonicalRails
     end
 
     def canonical_tag(host = canonical_host, port = canonical_port)
-      tag(:link, href: canonical_href(host, port), rel: :canonical)
+      canonical_url = canonical_href(host, port)
+      capture do
+        if CanonicalRails.opengraph_url
+          concat tag(:meta, property: 'og:url', content: canonical_url)
+        end
+        concat tag(:link, href: canonical_url, rel: :canonical)
+      end
     end
 
     def whitelisted_params
