@@ -43,7 +43,7 @@ module CanonicalRails
     def whitelisted_params
       params.select do |key, value|
         value.present? && CanonicalRails.sym_whitelisted_parameters.include?(key.to_sym)
-      end
+      end.to_h
     end
 
     def whitelisted_query_string
