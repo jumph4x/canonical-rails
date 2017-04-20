@@ -43,7 +43,7 @@ module CanonicalRails
     def whitelisted_params
       params.select do |key, value|
         value.present? && CanonicalRails.sym_whitelisted_parameters.include?(key.to_sym)
-      end
+      end.to_h
     end
 
     def whitelisted_query_string
@@ -57,7 +57,15 @@ module CanonicalRails
       # Rack 1.6.0 has it
       # https://github.com/rack/rack/blob/65a7104b6b3e9ecd8f33c63a478ab9a33a103507/test/spec_utils.rb#L251
 
-      "?" + Rack::Utils.build_nested_query(Hash[whitelisted_params.map { |k, v| v.is_a?(Numeric) ? [k, v.to_s] : [k, v] }]) if whitelisted_params.present?
+      wl_params = whitelisted_params
+
+      "?" + Rack::Utils.build_nested_query(convert_numeric_params(wl_params)) if wl_params.present?
+    end
+
+    private
+
+    def convert_numeric_params(params_hash)
+      Hash[params_hash.map { |k, v| v.is_a?(Numeric) ? [k, v.to_s] : [k, v] }]
     end
   end
 end
