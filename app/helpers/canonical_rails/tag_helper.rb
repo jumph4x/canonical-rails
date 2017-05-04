@@ -41,9 +41,11 @@ module CanonicalRails
     end
 
     def whitelisted_params
-      params.select do |key, value|
+      selected_params = params.select do |key, value|
         value.present? && CanonicalRails.sym_whitelisted_parameters.include?(key.to_sym)
-      end.to_h
+      end
+
+      selected_params.respond_to?(:to_unsafe_h) ? selected_params.to_unsafe_h : selected_params.to_h
     end
 
     def whitelisted_query_string
