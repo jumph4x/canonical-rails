@@ -258,4 +258,18 @@ describe CanonicalRails::TagHelper, type: :helper do
       end
     end
   end
+
+  describe 'when request action not present' do
+    # Occurs if middleware tries to render a controller action before having gone through the ActionDispatch router
+
+    describe 'on a collection action' do
+      before(:each) do
+        controller.request.path_parameters = {}
+      end
+
+      it 'should assume we dont want a trailing slash' do
+        expect(helper).not_to be_trailing_slash_needed
+      end
+    end
+  end
 end
