@@ -187,6 +187,22 @@ describe CanonicalRails::TagHelper, type: :helper do
         it 'should output a canonical tag w/ trailing slash' do
           expect(helper.canonical_href).to include '/?'
         end
+
+        context 'when controller/action pair specified' do
+          it 'should output a canonical tag w/ trailing slash if controller#action match' do
+            controller.request.path_parameters = { controller: :some_controller, action: :show}
+            CanonicalRails.class_variable_set(:@@sym_collection_actions, [[:some_controller, :show]])
+
+            expect(helper.canonical_href).to include '/?'
+          end
+
+          it 'should output a canonical tag w/out trailing slash otherwise' do
+            controller.request.path_parameters = { controller: :our_resources, action: :show}
+            CanonicalRails.class_variable_set(:@@sym_collection_actions, [[:some_controller, :show]])
+
+            expect(helper.canonical_href).not_to include '/?'
+          end
+        end
       end
 
       describe 'on a member action' do

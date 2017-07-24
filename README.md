@@ -35,6 +35,14 @@ your HTML views:
   <%= canonical_tag -%>
 ```
 
+## Collection actions configuration update (updated 24.07.2017)
+
+You can now specify collection actions for specific controller#action pairs, like this
+
+```ruby
+  config.collection_actions = [[:tags, :show]]
+```
+
 ## Cred
 
 A project by [Downshift Labs](http://downshiftlabs.com), Ruby on Rails,
