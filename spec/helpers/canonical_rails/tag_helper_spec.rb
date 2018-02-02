@@ -36,7 +36,7 @@ describe CanonicalRails::TagHelper, type: :helper do
 
     describe 'on a collection action' do
       before(:each) do
-        controller.request.path_parameters = { controller: :our_resources, action: :index }
+        controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
       end
 
       it 'should assume we want a trailing slash' do
@@ -60,7 +60,7 @@ describe CanonicalRails::TagHelper, type: :helper do
 
     describe 'on a member action' do
       before(:each) do
-        controller.request.path_parameters = { controller: :our_resources, action: :show }
+        controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
       end
 
       it 'should refuse trailing slash' do
@@ -104,7 +104,7 @@ describe CanonicalRails::TagHelper, type: :helper do
     describe 'with host and port' do
       before(:each) do
         CanonicalRails.port = 3000
-        controller.request.path_parameters = { controller: :our_resources, action: :show }
+        controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
       end
 
       describe '#canonical_href' do
@@ -123,7 +123,7 @@ describe CanonicalRails::TagHelper, type: :helper do
     describe 'with a specified protocol' do
       before(:each) do
         CanonicalRails.protocol = 'https://'
-        controller.request.path_parameters = { controller: :our_resources, action: :show }
+        controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
         allow(controller.request).to receive(:port) { 443 }
       end
 
@@ -159,7 +159,7 @@ describe CanonicalRails::TagHelper, type: :helper do
       before(:each) do
         CanonicalRails.whitelisted_parameters = ['page', 'keywords', 'search']
         allow_any_instance_of(controller.class).to receive(:params).and_return(params)
-        controller.request.path_parameters = { controller: :our_resources, action: :index }
+        controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
       end
 
       it 'should not include random params' do
@@ -181,7 +181,7 @@ describe CanonicalRails::TagHelper, type: :helper do
 
       describe 'on a collection action' do
         before(:each) do
-          controller.request.path_parameters = { controller: :our_resources, action: :index }
+          controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
         end
 
         it 'should output a canonical tag w/ trailing slash' do
@@ -191,7 +191,7 @@ describe CanonicalRails::TagHelper, type: :helper do
 
       describe 'on a member action' do
         before(:each) do
-          controller.request.path_parameters = { controller: :our_resources, action: :show }
+          controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
         end
         it 'should output a canonical tag w/out trailing slash' do
           expect(helper.canonical_href).to_not include '/?'
@@ -202,7 +202,7 @@ describe CanonicalRails::TagHelper, type: :helper do
 
   describe 'when host is specified' do
     before(:each) do
-      controller.request.path_parameters = { controller: :our_resources, action: :show }
+      controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
     end
 
     describe '#canonical_href' do
@@ -224,7 +224,7 @@ describe CanonicalRails::TagHelper, type: :helper do
 
   describe 'when host and port are specified' do
     before(:each) do
-      controller.request.path_parameters = { controller: :our_resources, action: :show }
+      controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
     end
 
     describe '#canonical_href' do
@@ -247,7 +247,7 @@ describe CanonicalRails::TagHelper, type: :helper do
   describe 'when opengraph url tag is turned on' do
     before(:each) do
       CanonicalRails.opengraph_url = true
-      controller.request.path_parameters = { controller: :our_resources, action: :show }
+      controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
     end
 
     describe '#canonical_tag' do
