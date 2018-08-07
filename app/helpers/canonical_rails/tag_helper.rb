@@ -1,7 +1,11 @@
 module CanonicalRails
   module TagHelper
     def trailing_slash_needed?
-      request.params.key?('action') && CanonicalRails.sym_collection_actions.include?(request.params['action'].to_sym)
+      action = request.params['action']
+      controller = request.params['controller']
+      return false unless action
+      CanonicalRails.sym_collection_actions.include?(action.to_sym) ||
+        !controller.nil? && CanonicalRails.sym_collection_actions.include?([controller.to_sym, action.to_sym])
     end
 
     def trailing_slash_if_needed
