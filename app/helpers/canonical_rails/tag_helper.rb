@@ -1,14 +1,28 @@
 module CanonicalRails
   module TagHelper
+    def canonical_tag(host = canonical_host, port = canonical_port)
+      canonical_url = canonical_href(host, port)
+      capture do
+        if CanonicalRails.opengraph_url
+          concat tag(:meta, property: 'og:url', content: canonical_url)
+        end
+        concat tag(:link, href: canonical_url, rel: :canonical)
+      end
+    end
+
+    private
+
     def trailing_slash_needed?
       request.params.key?('action') && CanonicalRails.sym_collection_actions.include?(request.params['action'].to_sym)
     end
 
     def trailing_slash_if_needed
-      "/" if trailing_slash_needed? && request.path != '/'
+      "/" if trailing_slash_needed?
     end
 
     def path_without_html_extension
+      return '' if request.path == '/'
+
       request.path.sub(/\.html$/, '')
     end
 
@@ -29,19 +43,9 @@ module CanonicalRails
       port = port.present? && port.to_i != default_ports[canonical_protocol] ? ":#{port}" : ''
       raw "#{canonical_protocol}#{host}#{port}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}".downcase
     end
-    
+
     def canonical_path
       raw "#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}"
-    end
-
-    def canonical_tag(host = canonical_host, port = canonical_port)
-      canonical_url = canonical_href(host, port)
-      capture do
-        if CanonicalRails.opengraph_url
-          concat tag(:meta, property: 'og:url', content: canonical_url)
-        end
-        concat tag(:link, href: canonical_url, rel: :canonical)
-      end
     end
 
     def whitelisted_params
@@ -67,8 +71,6 @@ module CanonicalRails
 
       "?" + Rack::Utils.build_nested_query(convert_numeric_params(wl_params)) if wl_params.present?
     end
-
-    private
 
     def convert_numeric_params(params_hash)
       Hash[params_hash.map { |k, v| v.is_a?(Numeric) ? [k, v.to_s] : [k, v] }]
