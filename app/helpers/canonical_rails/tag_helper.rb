@@ -5,10 +5,12 @@ module CanonicalRails
     end
 
     def trailing_slash_if_needed
-      "/" if trailing_slash_needed? && request.path != '/'
+      "/" if trailing_slash_needed?
     end
 
     def path_without_html_extension
+      return '' if request.path == '/'
+
       request.path.sub(/\.html$/, '')
     end
 
@@ -29,7 +31,7 @@ module CanonicalRails
       port = port.present? && port.to_i != default_ports[canonical_protocol] ? ":#{port}" : ''
       raw "#{canonical_protocol}#{host}#{port}#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}".downcase
     end
-    
+
     def canonical_path
       raw "#{path_without_html_extension}#{trailing_slash_if_needed}#{whitelisted_query_string}"
     end
