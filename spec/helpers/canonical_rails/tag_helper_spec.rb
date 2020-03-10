@@ -47,6 +47,12 @@ describe CanonicalRails::TagHelper, type: :helper do
         expect(helper.canonical_href.last).to eq '/'
       end
 
+      context "with force_trailing_slash_at_end_of_url set to false" do
+        it 'removes it' do
+          expect(helper.canonical_href(controller.request.host, controller.request.port, false).last).to_not eq '/'
+        end
+      end
+
       context "with the html extension in the url" do
         before(:each) do
           controller.request.path += '.html'
@@ -69,6 +75,12 @@ describe CanonicalRails::TagHelper, type: :helper do
 
       it 'should output a canonical tag w/out trailing slash' do
         expect(helper.canonical_href.last).to_not eq '/'
+      end
+
+      context "with force_trailing_slash_at_end_of_url set to true" do
+        it 'adds the trailing slash' do
+          expect(helper.canonical_href(controller.request.host, controller.request.port, true).last).to eq '/'
+        end
       end
 
       context "with the html extension in the url" do
