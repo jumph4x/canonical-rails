@@ -47,7 +47,7 @@ describe CanonicalRails::TagHelper, type: :helper do
         expect(helper.canonical_href.last).to eq '/'
       end
 
-      context "with force_trailing_slash_at_end_of_url set to false" do
+      context "with force_trailing_slash set to false" do
         it 'removes it' do
           expect(helper.canonical_href(controller.request.host, controller.request.port, false).last).to_not eq '/'
         end
@@ -77,7 +77,7 @@ describe CanonicalRails::TagHelper, type: :helper do
         expect(helper.canonical_href.last).to_not eq '/'
       end
 
-      context "with force_trailing_slash_at_end_of_url set to true" do
+      context "with force_trailing_slash set to true" do
         it 'adds the trailing slash' do
           expect(helper.canonical_href(controller.request.host, controller.request.port, true).last).to eq '/'
         end
