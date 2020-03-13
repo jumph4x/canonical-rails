@@ -4,11 +4,11 @@ module CanonicalRails
       request.params.key?('action') && CanonicalRails.sym_collection_actions.include?(request.params['action'].to_sym)
     end
 
-    # Leave force_trailing_slash_at_end_of_url as nil to get the original behavior of trailing_slash_if_needed
-    def trailing_slash_config(force_trailing_slash_at_end_of_url = nil)
-      if force_trailing_slash_at_end_of_url
+    # Leave force_trailing_slash as nil to get the original behavior of trailing_slash_if_needed
+    def trailing_slash_config(force_trailing_slash = nil)
+      if force_trailing_slash
         "/"
-      elsif force_trailing_slash_at_end_of_url.nil?
+      elsif force_trailing_slash.nil?
         trailing_slash_if_needed
       end
     end
@@ -35,18 +35,18 @@ module CanonicalRails
       (CanonicalRails.port || request.port).to_i
     end
 
-    def canonical_href(host = canonical_host, port = canonical_port, force_trailing_slash_at_end_of_url = nil)
+    def canonical_href(host = canonical_host, port = canonical_port, force_trailing_slash = nil)
       default_ports = { 'https://' => 443, 'http://' => 80 }
       port = port.present? && port.to_i != default_ports[canonical_protocol] ? ":#{port}" : ''
-      raw "#{canonical_protocol}#{host}#{port}#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash_at_end_of_url)}#{whitelisted_query_string}"
+      raw "#{canonical_protocol}#{host}#{port}#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash)}#{whitelisted_query_string}"
     end
 
-    def canonical_path(force_trailing_slash_at_end_of_url = nil)
-      raw "#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash_at_end_of_url)}#{whitelisted_query_string}"
+    def canonical_path(force_trailing_slash = nil)
+      raw "#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash)}#{whitelisted_query_string}"
     end
 
-    def canonical_tag(host = canonical_host, port = canonical_port, force_trailing_slash_at_end_of_url = nil)
-      canonical_url = canonical_href(host, port, force_trailing_slash_at_end_of_url)
+    def canonical_tag(host = canonical_host, port = canonical_port, force_trailing_slash = nil)
+      canonical_url = canonical_href(host, port, force_trailing_slash)
       capture do
         if CanonicalRails.opengraph_url
           concat tag(:meta, property: 'og:url', content: canonical_url)
