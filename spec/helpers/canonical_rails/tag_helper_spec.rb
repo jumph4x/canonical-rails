@@ -8,7 +8,7 @@ describe CanonicalRails::TagHelper, type: :helper do
 
   after(:each) do
     CanonicalRails.class_variable_set(:@@sym_collection_actions, nil)
-    CanonicalRails.class_variable_set(:@@sym_whitelisted_parameters, nil)
+    CanonicalRails.class_variable_set(:@@sym_allowed_parameters, nil)
   end
 
   # Default behavior
@@ -22,12 +22,12 @@ describe CanonicalRails::TagHelper, type: :helper do
       expect(helper.canonical_port).to eq 3000
     end
 
-    it 'should return no whitelisted params' do
-      expect(helper.whitelisted_params).to eq({})
+    it 'should return no allowed params' do
+      expect(helper.allowed_params).to eq({})
     end
 
-    it 'should return a nil whitelisted query string' do
-      expect(helper.whitelisted_query_string).to be_nil
+    it 'should return a nil allowed query string' do
+      expect(helper.allowed_query_string).to be_nil
     end
 
     it 'should infer the protocol by looking at the request' do
@@ -169,25 +169,25 @@ describe CanonicalRails::TagHelper, type: :helper do
       end
 
       before(:each) do
-        CanonicalRails.whitelisted_parameters = ['page', 'keywords', 'search']
+        CanonicalRails.allowed_parameters = ['page', 'keywords', 'search']
         allow_any_instance_of(controller.class).to receive(:params).and_return(params)
         controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
       end
 
       it 'should not include random params' do
-        expect(helper.whitelisted_params['i-will']).to be_nil
+        expect(helper.allowed_params['i-will']).to be_nil
       end
 
-      it 'should include whitelisted params' do
-        expect(helper.whitelisted_params['page']).to eq '5'
-        expect(helper.whitelisted_params['keywords']).to eq '"here be dragons"'
+      it 'should include allowed params' do
+        expect(helper.allowed_params['page']).to eq '5'
+        expect(helper.allowed_params['keywords']).to eq '"here be dragons"'
       end
 
-      it 'should escape whitelisted params properly' do
-        expect(helper.whitelisted_query_string).to eq '?page=5&keywords=%22here+be+dragons%22&search[super]=special'
+      it 'should escape allowed params properly' do
+        expect(helper.allowed_query_string).to eq '?page=5&keywords=%22here+be+dragons%22&search[super]=special'
       end
 
-      it 'should output whitelisted params using proper syntax (?key=value&key=value)' do
+      it 'should output allowed params using proper syntax (?key=value&key=value)' do
         expect(helper.canonical_tag).to eq '<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search[super]=special" rel="canonical" />'
       end
 

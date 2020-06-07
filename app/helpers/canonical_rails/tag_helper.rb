@@ -38,11 +38,11 @@ module CanonicalRails
     def canonical_href(host = canonical_host, port = canonical_port, force_trailing_slash = nil)
       default_ports = { 'https://' => 443, 'http://' => 80 }
       port = port.present? && port.to_i != default_ports[canonical_protocol] ? ":#{port}" : ''
-      raw "#{canonical_protocol}#{host}#{port}#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash)}#{whitelisted_query_string}"
+      raw "#{canonical_protocol}#{host}#{port}#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash)}#{allowed_query_string}"
     end
 
     def canonical_path(force_trailing_slash = nil)
-      raw "#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash)}#{whitelisted_query_string}"
+      raw "#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash)}#{allowed_query_string}"
     end
 
     def canonical_tag(host = canonical_host, port = canonical_port, force_trailing_slash = nil)
@@ -55,15 +55,15 @@ module CanonicalRails
       end
     end
 
-    def whitelisted_params
+    def allowed_params
       selected_params = params.select do |key, value|
-        value.present? && CanonicalRails.sym_whitelisted_parameters.include?(key.to_sym)
+        value.present? && CanonicalRails.sym_allowed_parameters.include?(key.to_sym)
       end
 
       selected_params.respond_to?(:to_unsafe_h) ? selected_params.to_unsafe_h : selected_params.to_h
     end
 
-    def whitelisted_query_string
+    def allowed_query_string
       # Rack 1.4.5 fails to handle params that are not strings
       # So if
       #     my_hash = { "a" => 1, "b" => 2}
@@ -74,7 +74,7 @@ module CanonicalRails
       # Rack 1.6.0 has it
       # https://github.com/rack/rack/blob/65a7104b6b3e9ecd8f33c63a478ab9a33a103507/test/spec_utils.rb#L251
 
-      wl_params = whitelisted_params
+      wl_params = allowed_params
 
       "?" + Rack::Utils.build_nested_query(convert_numeric_params(wl_params)) if wl_params.present?
     end

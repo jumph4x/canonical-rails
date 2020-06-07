@@ -20,9 +20,9 @@ CanonicalRails.setup do |config|
   config.collection_actions# = [:index]
 
   # Parameter spamming can cause index dilution by creating seemingly different URLs with identical or near-identical content.
-  # Unless whitelisted, these parameters will be omitted
+  # Unless allowed, these parameters will be omitted
 
-  config.whitelisted_parameters# = []
+  config.allowed_parameters# = []
 
   # Output a matching OpenGraph URL meta tag (og:url) with the canonical URL, as recommended by Facebook et al
   config.opengraph_url#= true
