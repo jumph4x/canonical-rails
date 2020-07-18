@@ -14,12 +14,12 @@ describe CanonicalRails::TagHelper, type: :helper do
   # Default behavior
   describe 'w/ default config' do
     it 'should infer the domain name by looking at the request' do
-      expect(helper.canonical_host).to eq 'www.alternative-domain.com'
+      expect(helper.send(:canonical_host)).to eq 'www.alternative-domain.com'
     end
 
     it 'should infer the port by looking at the request' do
       allow(controller.request).to receive(:port) { 3000 }
-      expect(helper.canonical_port).to eq 3000
+      expect(helper.send(:canonical_port)).to eq 3000
     end
 
     it 'should return no allowed params' do
@@ -31,7 +31,7 @@ describe CanonicalRails::TagHelper, type: :helper do
     end
 
     it 'should infer the protocol by looking at the request' do
-      expect(helper.canonical_protocol).to eq 'http://'
+      expect(helper.send(:canonical_protocol)).to eq 'http://'
     end
 
     describe 'on a collection action' do
@@ -104,12 +104,12 @@ describe CanonicalRails::TagHelper, type: :helper do
 
     describe 'on both types of actions' do
       it 'should take the domain from the config' do
-        expect(helper.canonical_host).to eq 'www.mywebstore.com'
+        expect(helper.send(:canonical_host)).to eq 'www.mywebstore.com'
       end
 
       it 'should take the port from the config' do
         CanonicalRails.port = 3000
-        expect(helper.canonical_port).to eq 3000
+        expect(helper.send(:canonical_port)).to eq 3000
       end
     end
 

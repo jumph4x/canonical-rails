@@ -1,38 +1,11 @@
 module CanonicalRails
   module TagHelper
-    def trailing_slash_needed?
-      request.params.key?('action') && CanonicalRails.sym_collection_actions.include?(request.params['action'].to_sym)
-    end
-
-    # Leave force_trailing_slash as nil to get the original behavior of trailing_slash_if_needed
-    def trailing_slash_config(force_trailing_slash = nil)
-      if force_trailing_slash
-        "/"
-      elsif force_trailing_slash.nil?
-        trailing_slash_if_needed
-      end
-    end
-
     def trailing_slash_if_needed
       "/" if trailing_slash_needed?
     end
 
-    def path_without_html_extension
-      return '' if request.path == '/'
-
-      request.path.sub(/\.html$/, '')
-    end
-
-    def canonical_protocol
-      CanonicalRails.protocol || request.protocol
-    end
-
-    def canonical_host
-      CanonicalRails.host || request.host
-    end
-
-    def canonical_port
-      (CanonicalRails.port || request.port).to_i
+    def trailing_slash_needed?
+      request.params.key?('action') && CanonicalRails.sym_collection_actions.include?(request.params['action'].to_sym)
     end
 
     def canonical_href(host = canonical_host, port = canonical_port, force_trailing_slash = nil)
@@ -83,6 +56,33 @@ module CanonicalRails
 
     def convert_numeric_params(params_hash)
       Hash[params_hash.map { |k, v| v.is_a?(Numeric) ? [k, v.to_s] : [k, v] }]
+    end
+
+    def canonical_port
+      (CanonicalRails.port || request.port).to_i
+    end
+
+    def canonical_protocol
+      CanonicalRails.protocol || request.protocol
+    end
+
+    def canonical_host
+      CanonicalRails.host || request.host
+    end
+
+    def path_without_html_extension
+      return '' if request.path == '/'
+
+      request.path.sub(/\.html$/, '')
+    end
+
+    # Leave force_trailing_slash as nil to get the original behavior of trailing_slash_if_needed
+    def trailing_slash_config(force_trailing_slash = nil)
+      if force_trailing_slash
+        "/"
+      elsif force_trailing_slash.nil?
+        trailing_slash_if_needed
+      end
     end
   end
 end
