@@ -47,10 +47,10 @@ module CanonicalRails
 
     def canonical_tag(host = canonical_host, port = canonical_port, force_trailing_slash = nil)
       canonical_url = canonical_href(host, port, force_trailing_slash)
-      capture do
-        if CanonicalRails.opengraph_url
-          concat tag(:meta, property: 'og:url', content: canonical_url)
-        end
+
+      if CanonicalRails.opengraph_url
+        concat tag(:meta, property: 'og:url', content: canonical_url)
+      else
         concat tag(:link, href: canonical_url, rel: :canonical)
       end
     end
