@@ -23,8 +23,8 @@ module CanonicalRails
   mattr_accessor :collection_actions
   @@collection_actions = [:index]
 
-  mattr_accessor :whitelisted_parameters
-  @@whitelisted_parameters = []
+  mattr_accessor :allowed_parameters
+  @@allowed_parameters = []
 
   mattr_accessor :opengraph_url
   @@opengraph_url = false
@@ -33,7 +33,7 @@ module CanonicalRails
     @@sym_collection_actions ||= self.collection_actions.map(&:to_sym)
   end
 
-  def self.sym_whitelisted_parameters
-    @@sym_whitelisted_parameters ||= self.whitelisted_parameters.map(&:to_sym)
+  def self.sym_allowed_parameters
+    @@sym_allowed_parameters ||= self.allowed_parameters.map(&:to_sym)
   end
 end
