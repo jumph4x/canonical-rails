@@ -130,6 +130,16 @@ describe CanonicalRails::TagHelper, type: :helper do
           expect(helper.canonical_tag).to include 'http://www.mywebstore.com:3000/our_resources'
         end
       end
+
+      describe 'when force_no_port is set to true in config' do
+        before(:each) do
+          CanonicalRails.force_no_port = true
+        end
+
+        it 'ignores the port in the request' do
+          expect(helper.canonical_tag).to include 'http://www.mywebstore.com/our_resources'
+        end
+      end
     end
 
     describe 'with a specified protocol' do

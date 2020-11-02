@@ -32,6 +32,8 @@ module CanonicalRails
     end
 
     def canonical_port
+      return nil if CanonicalRails.force_no_port
+
       (CanonicalRails.port || request.port).to_i
     end
 

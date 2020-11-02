@@ -17,6 +17,9 @@ module CanonicalRails
   mattr_accessor :port
   @@port = nil
 
+  mattr_accessor :force_no_port
+  @@force_no_port = nil
+
   mattr_accessor :protocol
   @@protocol = nil
 
