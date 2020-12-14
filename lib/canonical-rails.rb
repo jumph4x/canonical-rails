@@ -1,4 +1,5 @@
 require "canonical-rails/engine"
+require "canonical-rails/deprecation"
 
 module CanonicalRails
 
@@ -23,6 +24,10 @@ module CanonicalRails
   mattr_accessor :collection_actions
   @@collection_actions = [:index]
 
+  # @deprecated: use config.allowed_parameters instead
+  mattr_accessor :whitelisted_parameters
+  @@whitelisted_parameters = []
+
   mattr_accessor :allowed_parameters
   @@allowed_parameters = []
 
@@ -34,6 +39,11 @@ module CanonicalRails
   end
 
   def self.sym_allowed_parameters
-    @@sym_allowed_parameters ||= self.allowed_parameters.map(&:to_sym)
+    @@sym_allowed_parameters ||= if self.whitelisted_parameters.empty?
+      self.allowed_parameters.map(&:to_sym)
+    else
+      CanonicalRails::Deprecation.warn('config.whitelisted_parameters is deprecated, please use config.allowed_parameters instead.')
+      self.whitelisted_parameters.map(&:to_sym)
+    end
   end
 end

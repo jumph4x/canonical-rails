@@ -210,6 +210,26 @@ describe CanonicalRails::TagHelper, type: :helper do
         end
       end
     end
+
+    describe 'with the old config.whitelisted_parameters' do
+      before do
+        CanonicalRails.whitelisted_parameters = ['page']
+        allow_any_instance_of(controller.class)
+          .to receive(:params)
+          .and_return(ActionController::Parameters.new('i-will' => 'kill-your-seo', 'page' => '5'))
+        controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
+      end
+
+      after do
+        CanonicalRails.class_variable_set(:@@sym_whitelisted_parameters, nil)
+      end
+
+      it 'emits a deprecation warning and keeps working' do
+        expect(CanonicalRails::Deprecation).to receive(:warn).once
+        expect(helper.allowed_params['page']).to eq '5'
+        expect(helper.allowed_params['i-will']).to be_nil
+      end
+    end
   end
 
   describe 'when host is specified' do

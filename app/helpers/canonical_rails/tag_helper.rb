@@ -73,10 +73,8 @@ module CanonicalRails
       # https://github.com/rack/rack/blob/9939d40a5e23dcb058751d1029b794aa2f551900/test/spec_utils.rb#L222
       # Rack 1.6.0 has it
       # https://github.com/rack/rack/blob/65a7104b6b3e9ecd8f33c63a478ab9a33a103507/test/spec_utils.rb#L251
-
-      wl_params = allowed_params
-
-      "?" + Rack::Utils.build_nested_query(convert_numeric_params(wl_params)) if wl_params.present?
+      parameters = allowed_params
+      "?" + Rack::Utils.build_nested_query(convert_numeric_params(parameters)) if parameters.present?
     end
 
     private
