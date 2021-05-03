@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
     s.add_dependency dep, '>= 4.1', '< 6.2'
   end
 
-  s.add_dependency "sprockets", '~> 3.0'
+  s.add_dependency "sprockets-rails", '~> 3.0'
 
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'rspec-rails', '~> 3.5'
