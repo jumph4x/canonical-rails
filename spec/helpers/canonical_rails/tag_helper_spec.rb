@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CanonicalRails::TagHelper, type: :helper do
+RSpec.describe CanonicalRails::TagHelper, type: :helper do
   before(:each) do
     controller.request.host = 'www.alternative-domain.com'
     controller.request.path = '/our_resources'

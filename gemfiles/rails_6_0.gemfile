@@ -3,7 +3,7 @@
 source "http://rubygems.org"
 
 gem "jquery-rails"
-gem "rails", "~> 6.0.0.beta1"
+gem "railties", "~> 6.0.0.beta1"
 gem 'sqlite3', '~> 1.4.0'
 
 gemspec path: "../"
