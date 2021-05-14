@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe CanonicalRails::TagHelper, type: :helper do
-  before(:each) do
+  before do
     controller.request.host = 'www.alternative-domain.com'
     controller.request.path = '/our_resources'
   end
 
-  after(:each) do
+  after do
     CanonicalRails.class_variable_set(:@@sym_collection_actions, nil)
     CanonicalRails.class_variable_set(:@@sym_allowed_parameters, nil)
   end
@@ -35,7 +35,7 @@ describe CanonicalRails::TagHelper, type: :helper do
     end
 
     describe 'on a collection action' do
-      before(:each) do
+      before do
         controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
       end
 
@@ -54,7 +54,7 @@ describe CanonicalRails::TagHelper, type: :helper do
       end
 
       context "with the html extension in the url" do
-        before(:each) do
+        before do
           controller.request.path += '.html'
         end
 
@@ -65,7 +65,7 @@ describe CanonicalRails::TagHelper, type: :helper do
     end
 
     describe 'on a member action' do
-      before(:each) do
+      before do
         controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
       end
 
@@ -84,7 +84,7 @@ describe CanonicalRails::TagHelper, type: :helper do
       end
 
       context "with the html extension in the url" do
-        before(:each) do
+        before do
           controller.request.path += '.html'
         end
 
@@ -97,7 +97,7 @@ describe CanonicalRails::TagHelper, type: :helper do
 
   # Customized behavior
   describe 'w/ custom config' do
-    before(:each) do
+    before do
       CanonicalRails.host = 'www.mywebstore.com'
       CanonicalRails.port = nil
     end
@@ -114,7 +114,7 @@ describe CanonicalRails::TagHelper, type: :helper do
     end
 
     describe 'with host and port' do
-      before(:each) do
+      before do
         CanonicalRails.port = 3000
         controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
       end
@@ -133,13 +133,13 @@ describe CanonicalRails::TagHelper, type: :helper do
     end
 
     describe 'with a specified protocol' do
-      before(:each) do
+      before do
         CanonicalRails.protocol = 'https://'
         controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
         allow(controller.request).to receive(:port) { 443 }
       end
 
-      after(:each) do
+      after do
         CanonicalRails.protocol = nil
       end
 
@@ -168,7 +168,7 @@ describe CanonicalRails::TagHelper, type: :helper do
                                          'search' => { 'super' => 'special' }
       end
 
-      before(:each) do
+      before do
         CanonicalRails.allowed_parameters = ['page', 'keywords', 'search']
         allow_any_instance_of(controller.class).to receive(:params).and_return(params)
         controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
@@ -192,7 +192,7 @@ describe CanonicalRails::TagHelper, type: :helper do
       end
 
       describe 'on a collection action' do
-        before(:each) do
+        before do
           controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
         end
 
@@ -202,7 +202,7 @@ describe CanonicalRails::TagHelper, type: :helper do
       end
 
       describe 'on a member action' do
-        before(:each) do
+        before do
           controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
         end
         it 'should output a canonical tag w/out trailing slash' do
@@ -233,7 +233,7 @@ describe CanonicalRails::TagHelper, type: :helper do
   end
 
   describe 'when host is specified' do
-    before(:each) do
+    before do
       controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
     end
 
@@ -255,7 +255,7 @@ describe CanonicalRails::TagHelper, type: :helper do
   end
 
   describe 'when host and port are specified' do
-    before(:each) do
+    before do
       controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
     end
 
@@ -277,7 +277,7 @@ describe CanonicalRails::TagHelper, type: :helper do
   end
 
   describe 'when opengraph url tag is turned on' do
-    before(:each) do
+    before do
       CanonicalRails.opengraph_url = true
       controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
     end
@@ -295,7 +295,7 @@ describe CanonicalRails::TagHelper, type: :helper do
     # Occurs if middleware tries to render a controller action before having gone through the ActionDispatch router
 
     describe 'on a collection action' do
-      before(:each) do
+      before do
         controller.request.path_parameters = {}
       end
 
