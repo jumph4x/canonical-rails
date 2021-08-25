@@ -20,7 +20,7 @@ module CanonicalRails
     def path_without_html_extension
       return '' if request.path == '/'
 
-      request.path.sub(/\.html$/, '')
+      request.path.sub(/\.html?$/, '')
     end
 
     def canonical_protocol
