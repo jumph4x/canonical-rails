@@ -15,6 +15,8 @@ gemfile:
   - gemfiles/rails_5_1.gemfile
   - gemfiles/rails_5_2.gemfile
   - gemfiles/rails_6_0.gemfile
+  - gemfiles/rails_6_1.gemfile
+  - gemfiles/rails_main.gemfile
 
 before_install:
   - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
@@ -46,3 +48,7 @@ matrix:
       gemfile: gemfiles/rails_4_1.gemfile
     - rvm: 2.5.0
       gemfile: gemfiles/rails_4_2.gemfile
+    - rvm: 2.5.0
+      gemfile: gemfiles/rails_6_1.gemfile
+    - rvm: 2.5.0
+      gemfile: gemfiles/rails_main.gemfile
