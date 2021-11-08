@@ -34,8 +34,21 @@ module CanonicalRails
   mattr_accessor :opengraph_url
   @@opengraph_url = false
 
+  mattr_accessor :enable_internationalization
+  @@enable_internationalization = false
+
+  mattr_accessor :default_locale
+  @@default_locale = :en
+
+  mattr_accessor :supported_locales
+  @@supported_locales = [:en]
+
   def self.sym_collection_actions
     @@sym_collection_actions ||= self.collection_actions.map(&:to_sym)
+  end
+
+  def self.sym_supported_locales
+    @@sym_supported_locales ||= self.supported_locales.map(&:to_sym)
   end
 
   def self.sym_allowed_parameters

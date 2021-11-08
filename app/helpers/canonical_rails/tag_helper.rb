@@ -20,7 +20,15 @@ module CanonicalRails
     def path_without_html_extension
       return '' if request.path == '/'
 
-      request.path.sub(/\.html?$/, '')
+      path = request.path.sub(/\.html?$/, '')
+
+      if enable_internationalization?
+        supported_locales.each do |locale|
+          path = path.sub(/\/*#{locale}/, '')
+        end
+      end
+
+      path
     end
 
     def canonical_protocol
@@ -35,10 +43,27 @@ module CanonicalRails
       (CanonicalRails.port || request.port).to_i
     end
 
-    def canonical_href(host = canonical_host, port = canonical_port, force_trailing_slash = nil)
+    def enable_internationalization?
+      CanonicalRails.enable_internationalization
+    end
+
+    def default_locale
+      CanonicalRails.default_locale
+    end
+
+    def supported_locales
+      CanonicalRails.supported_locales
+    end
+
+    def include_internationalization_links?
+      enable_internationalization? && request.path == path_without_html_extension
+    end
+
+    def canonical_href(host = canonical_host, port = canonical_port, force_trailing_slash = nil, locale = nil)
       default_ports = { 'https://' => 443, 'http://' => 80 }
       port = port.present? && port.to_i != default_ports[canonical_protocol] ? ":#{port}" : ''
-      raw "#{canonical_protocol}#{host}#{port}#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash)}#{allowed_query_string}"
+      locale = locale ? "/#{locale}" : ''
+      raw "#{canonical_protocol}#{host}#{locale}#{port}#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash)}#{allowed_query_string}"
     end
 
     def canonical_path(force_trailing_slash = nil)
@@ -52,6 +77,13 @@ module CanonicalRails
           concat tag(:meta, property: 'og:url', content: canonical_url)
         end
         concat tag(:link, href: canonical_url, rel: :canonical)
+
+        if include_internationalization_links?
+          supported_locales.each do |locale|
+            alternate_url = canonical_href(host, port, force_trailing_slash, locale)
+            concat tag(:link, href: alternate_url, rel: :alternate, hreflang: locale)
+          end
+        end
       end
     end
 

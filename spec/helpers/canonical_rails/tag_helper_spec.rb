@@ -72,6 +72,25 @@ describe CanonicalRails::TagHelper, type: :helper do
           expect(helper.canonical_href).to_not include '.htm'
         end
       end
+
+      context 'with en localization in the url' do
+        before(:each) do
+          controller.request.path = "/en" + controller.request.path
+        end
+
+        after(:each) do
+          CanonicalRails.enable_internationalization = false
+        end
+
+        it 'removes it, if internationalization is enabled' do
+          CanonicalRails.enable_internationalization = true
+          expect(helper.canonical_href).to_not include '/en'
+        end
+
+        it 'does not remove it, if internationalization is not enabled' do
+          expect(helper.canonical_href).to include '/en'
+        end
+      end
     end
 
     describe 'on a member action' do
@@ -238,6 +257,32 @@ describe CanonicalRails::TagHelper, type: :helper do
         expect(CanonicalRails::Deprecation).to receive(:warn).once
         expect(helper.allowed_params['page']).to eq '5'
         expect(helper.allowed_params['i-will']).to be_nil
+      end
+    end
+
+    describe 'with internationalization enabled' do
+      before(:each) do
+        CanonicalRails.enable_internationalization = true
+        CanonicalRails.default_locale = 'en'
+        CanonicalRails.supported_locales = ['en', 'de']
+      end
+
+      after(:each) do
+        CanonicalRails.enable_internationalization = false
+      end
+
+      it 'should output a canonical tag w/out the default locale in the path' do
+        controller.request.path = "/en" + controller.request.path
+        expect(helper.canonical_href).to_not include("/en")
+
+        controller.request.path = "/de" + controller.request.path
+        expect(helper.canonical_href).to_not include("/de")
+      end
+
+      it 'should output alternate, hreflang links on canonical pages' do
+        expect(helper.canonical_tag).to include('<link href="http://www.mywebstore.com/en/our_resources" rel="alternate" hreflang="en" /')
+        expect(helper.canonical_tag).to include('<link href="http://www.mywebstore.com/de/our_resources" rel="alternate" hreflang="de" /')
+        expect(helper.canonical_tag).to include('<link href="http://www.mywebstore.com/our_resources" rel="canonical" />')
       end
     end
   end

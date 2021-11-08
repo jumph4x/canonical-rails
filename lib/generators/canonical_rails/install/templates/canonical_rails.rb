@@ -26,4 +26,9 @@ CanonicalRails.setup do |config|
 
   # Output a matching OpenGraph URL meta tag (og:url) with the canonical URL, as recommended by Facebook et al
   config.opengraph_url#= true
+
+  # Handle internationalization using the rel='alternate' links
+  config.enable_internationalization#= false
+  config.default_locale#= :en
+  config.supported_locales#= [:en]
 end
