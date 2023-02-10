@@ -4,6 +4,9 @@ source "http://rubygems.org"
 
 gem "jquery-rails"
 gem "sqlite3"
-gem "rails", github: "rails/rails", branch: "main"
+
+%w[actionmailer activerecord railties].each do |dep|
+  gem dep, github: "rails", branch: "main"
+end
 
 gemspec path: "../"
