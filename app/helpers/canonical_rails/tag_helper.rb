@@ -17,10 +17,10 @@ module CanonicalRails
       "/" if trailing_slash_needed?
     end
 
-    def path_without_html_extension
+    def path_without_extension
       return '' if request.path == '/'
 
-      request.path.sub(/\.html?$/, '')
+      request.path.sub(/\.\w{3,4}$/, '')
     end
 
     def canonical_protocol
@@ -38,11 +38,11 @@ module CanonicalRails
     def canonical_href(host = canonical_host, port = canonical_port, force_trailing_slash = nil)
       default_ports = { 'https://' => 443, 'http://' => 80 }
       port = port.present? && port.to_i != default_ports[canonical_protocol] ? ":#{port}" : ''
-      raw "#{canonical_protocol}#{host}#{port}#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash)}#{allowed_query_string}"
+      raw "#{canonical_protocol}#{host}#{port}#{path_without_extension}#{trailing_slash_config(force_trailing_slash)}#{allowed_query_string}"
     end
 
     def canonical_path(force_trailing_slash = nil)
-      raw "#{path_without_html_extension}#{trailing_slash_config(force_trailing_slash)}#{allowed_query_string}"
+      raw "#{path_without_extension}#{trailing_slash_config(force_trailing_slash)}#{allowed_query_string}"
     end
 
     def canonical_tag(host = canonical_host, port = canonical_port, force_trailing_slash = nil)
