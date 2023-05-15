@@ -36,5 +36,4 @@ your HTML views:
 
 ## Cred
 
-A project by [Downshift Labs](http://downshiftlabs.com), Ruby on Rails,
-Performance tuning and Spree Commerce projects.
+Originally developed for ![FCP Euro - High Quality European Car Parts](https://www.fcpeuro.com).
