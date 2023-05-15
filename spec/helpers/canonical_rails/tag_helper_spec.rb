@@ -72,6 +72,16 @@ describe CanonicalRails::TagHelper, type: :helper do
           expect(helper.canonical_href).to_not include '.htm'
         end
       end
+
+      context "with the json extension in the url" do
+        before(:each) do
+          controller.request.path += '.json'
+        end
+
+        it "removes it" do
+          expect(helper.canonical_href).to_not include '.json'
+        end
+      end
     end
 
     describe 'on a member action' do
