@@ -36,4 +36,4 @@ your HTML views:
 
 ## Cred
 
-Originally developed for ![FCP Euro - High Quality European Car Parts](https://www.fcpeuro.com).
+Originally developed for [FCP Euro - High Quality European Car Parts](https://www.fcpeuro.com).
