@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'uri'
 
 describe CanonicalRails::TagHelper, type: :helper do
   before(:each) do
