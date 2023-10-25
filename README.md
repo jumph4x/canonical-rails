@@ -1,6 +1,6 @@
 CanonicalRails
 ==============
-![https://github.com/jumph4x/canonical-rails/actions/workflows/ruby.yml](https://github.com/jumph4x/canonical-rails/actions/workflows/ruby.yml/badge.svg)
+[![latest builds](https://github.com/jumph4x/canonical-rails/actions/workflows/ruby.yml/badge.svg)](https://github.com/jumph4x/canonical-rails/actions/workflows/ruby.yml)
 
 
 
