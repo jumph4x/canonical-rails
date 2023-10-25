@@ -204,11 +204,15 @@ describe CanonicalRails::TagHelper, type: :helper do
       end
 
       it 'should escape allowed params properly' do
-        expect(helper.allowed_query_string).to eq '?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special'
+        expect(helper.allowed_query_string).to eq('?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special').
+                                            or(eq('?page=5&keywords=%22here+be+dragons%22&search[super]=special'))
       end
 
       it 'should output allowed params using proper syntax (?key=value&key=value)' do
-        expect(helper.canonical_tag).to eq '<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special" rel="canonical" />'
+        # https://github.com/rack/rack/issues/792
+        # this will produce different results depending on Ruby version
+        expect(helper.canonical_tag).to eq('<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search[super]=special" rel="canonical" />').
+                                    or(eq('<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special" rel="canonical" />'))
       end
 
       describe 'on a collection action' do
