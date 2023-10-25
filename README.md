@@ -1,6 +1,6 @@
 CanonicalRails
 ==============
-[![Build Status](https://travis-ci.org/jumph4x/canonical-rails.svg?branch=master)](https://travis-ci.org/jumph4x/canonical-rails)
+![build]([https://github.com/github/docs/actions/workflows/main.yml/badge.svg](https://github.com/jumph4x/canonical-rails/actions/workflows/ruby/badge.svg)
 
 A number of articles exist explaining the issue concisely and at length:
 
