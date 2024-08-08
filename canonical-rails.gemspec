@@ -14,12 +14,12 @@ Gem::Specification.new do |s|
   s.description = "Configurable, but assumes a conservative strategy by default with a goal to solve many search engine index problems: multiple hostnames, inbound links with arbitrary parameters, trailing slashes. "
   s.license     = "MIT"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency 'actionview', '>= 4.1', '<= 7.2'
 
   s.add_development_dependency 'actionpack', '>= 4.1', '<= 7.1'
-  s.add_development_dependency 'appraisal'
+  s.add_development_dependency 'appraisal', '~> 2.5'
   s.add_development_dependency 'rspec-rails', '~> 4.0.1'
-  s.add_development_dependency 'pry'
+  s.add_development_dependency 'pry', '= 0.14'
 end
