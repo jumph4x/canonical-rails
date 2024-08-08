@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module CanonicalRails
   module TagHelper
     def trailing_slash_needed?

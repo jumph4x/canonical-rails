@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative '../../app/helpers/canonical_rails/tag_helper'
 
 module CanonicalRails

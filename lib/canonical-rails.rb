@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "canonical-rails/engine"
 require "canonical-rails/deprecation"
 

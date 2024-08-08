@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module CanonicalRails
   class InstallGenerator < Rails::Generators::Base
 
