@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source "http://rubygems.org"
+source "https://rubygems.org"
 
 # Declare your gem's dependencies in canonical-rails.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
