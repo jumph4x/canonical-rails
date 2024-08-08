@@ -75,13 +75,13 @@ jobs:
         run: echo "GEM_NAME=$(ls | grep gemspec | cut -d. -f1)" >> $GITHUB_ENV
       - name: build
         run: echo "GEM_VERSION=$(gem build ${{ env.GEM_NAME }}.gemspec 2>&1 | grep Version | cut -d':' -f 2 | tr -d " \t\n\r")" >> $GITHUB_ENV
-      - name: publish to GitHub packages (if new tag)
-        if: startsWith(github.ref, 'refs/tags/')
-        run: |
-          export OWNER=$( echo ${{ github.repository }} | cut -d "/" -f 1 )
-          GEM_HOST_API_KEY=${{ secrets.GITHUB_TOKEN }} gem push --KEY github --host https://rubygems.pkg.github.com/${OWNER} ${{ env.GEM_NAME }}-${{ env.GEM_VERSION }}.gem
       - name: Attest build provenance (if new tag)
         uses: actions/attest-build-provenance@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           subject-path: "${{ env.GEM_NAME }}-${{ env.GEM_VERSION }}.gem"
+      - name: publish to GitHub packages (if new tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          export OWNER=$( echo ${{ github.repository }} | cut -d "/" -f 1 )
+          GEM_HOST_API_KEY=${{ secrets.GITHUB_TOKEN }} gem push --KEY github --host https://rubygems.pkg.github.com/${OWNER} ${{ env.GEM_NAME }}-${{ env.GEM_VERSION }}.gem
