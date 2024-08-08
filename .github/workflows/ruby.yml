@@ -2,6 +2,8 @@ name: Ruby
 on:
   workflow_dispatch:
   push:
+    tags:
+      - '*'
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
