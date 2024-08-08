@@ -53,7 +53,7 @@ jobs:
           bundler-cache: true
       - run: gem install rubocop
       - name: Rubocop
-        run: rubocop -f github
+        run: rubocop -f github lib/ spec/ app/
 
   build:
     needs: [test, lint, appraisal]
