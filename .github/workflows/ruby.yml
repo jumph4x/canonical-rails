@@ -13,6 +13,8 @@ jobs:
     strategy:
       matrix:
         ruby-version: ['3.1', '3.2', '3.3']
+    env:
+      HAS_GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_AUTH_TOKEN != '' }}
     steps:
     - uses: actions/checkout@v4
     - name: Set up Ruby
@@ -35,7 +37,7 @@ jobs:
         OWNER: ${{ github.repository_owner }}
 
     - name: Publish to RubyGems
-      if: ${{ secrets.RUBYGEMS_AUTH_TOKEN != '' }}
+      if: ${{ env.HAS_GEM_HOST_API_KEY }}
       run: |
         mkdir -p $HOME/.gem
         touch $HOME/.gem/credentials
@@ -44,4 +46,4 @@ jobs:
         gem build *.gemspec
         gem push *.gem
       env:
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
+        GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_AUTH_TOKEN }}
