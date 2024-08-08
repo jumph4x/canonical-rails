@@ -39,6 +39,6 @@ appraise "rails-7-1" do
 end
 
 # broken, as the dependencies of 8.0 are alpha...
-# appraise 'rails-main' do
-#   gem 'rails', github: 'rails/rails', branch: 'main', prerelease: true
+# appraise "rails-main" do
+#   gem "rails", github: "rails/rails", branch: "main"
 # end
