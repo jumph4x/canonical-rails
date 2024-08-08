@@ -26,6 +26,19 @@ jobs:
     - name: Run tests
       run: bundle exec rake
 
+  appraisal:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+      - name: Run appraisal tests
+        run: bundle exec appraisal rake
+
   lint:
     runs-on: ubuntu-latest
     permissions:
@@ -42,7 +55,7 @@ jobs:
         run: rubocop -f github lib/ spec/ app/
 
   build:
-    needs: [test, lint]
+    needs: [test, lint, appraisal]
     runs-on: ubuntu-latest
     permissions:
       contents: read
