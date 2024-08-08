@@ -1,8 +1,6 @@
 CanonicalRails
 ==============
-[![latest builds](https://github.com/jumph4x/canonical-rails/actions/workflows/ruby.yml/badge.svg)](https://github.com/jumph4x/canonical-rails/actions/workflows/ruby.yml)
-
-
+[![latest builds](https://github.com/jumph4x/canonical-rails/actions/workflows/ruby.yml/badge.svg)](.s/actions/workflows/ruby.yml)
 
 A number of articles exist explaining the issue concisely and at length:
 

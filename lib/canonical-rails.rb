@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'canonical-rails/engine'
-require 'canonical-rails/deprecation'
+require "canonical-rails/engine"
+require "canonical-rails/deprecation"
 
 module CanonicalRails
   # Default way to setup CanonicalRails. Run `rails g canonical_rails:install` to create
@@ -43,7 +43,7 @@ module CanonicalRails
     @@sym_allowed_parameters ||= if whitelisted_parameters.empty?
                                    allowed_parameters.map(&:to_sym)
                                  else
-                                   CanonicalRails::Deprecation.warn('config.whitelisted_parameters is deprecated, please use config.allowed_parameters instead.')
+                                   CanonicalRails::Deprecation.warn("config.whitelisted_parameters is deprecated, please use config.allowed_parameters instead.")
                                    whitelisted_parameters.map(&:to_sym)
                                  end
   end

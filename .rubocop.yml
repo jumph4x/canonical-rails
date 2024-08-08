@@ -1,0 +1,21 @@
+inherit_gem:
+  rubocop-github:
+    - config/default.yml
+    - config/rails.yml # Rails-specific rules and cops
+
+AllCops:
+  SuggestExtensions: false
+  DisplayCopNames: true
+  TargetRubyVersion: 3.3.4
+  NewCops: enable
+  Exclude:
+    - 'script/*'
+    - 'gemfiles/*'
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: either
+
+Naming/FileName:
+  Exclude:
+    - 'lib/canonical-rails.rb'
+    - 'lib/tasks/canonical-rails_tasks.rake'

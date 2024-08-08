@@ -4,4 +4,13 @@ source "http://rubygems.org"
 
 gem "rails", "~> 7.0.0"
 
+group :development do
+  gem "actionpack"
+  gem "appraisal"
+  gem "pry"
+  gem "rspec-rails"
+  gem "rubocop"
+  gem "rubocop-github"
+end
+
 gemspec path: "../"

@@ -51,8 +51,7 @@ jobs:
           bundler-cache: true
       - run: gem install rubocop
       - name: Rubocop
-        continue-on-error: true # for now...
-        run: rubocop -f github lib/ spec/ app/
+        run: rubocop -f github
 
   build:
     needs: [test, lint, appraisal]
