@@ -36,6 +36,8 @@ jobs:
         with:
           ruby-version: '3.3'
           bundler-cache: true
+      - name: Install appraisal deps from scratch
+        run: bundle exec appraisal update
       - name: Run appraisal tests
         run: bundle exec appraisal rake
 
