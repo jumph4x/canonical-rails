@@ -1,9 +1,11 @@
-require 'spec_helper'
+# frozen_string_literal: true
+
+require "spec_helper"
 
 describe CanonicalRails::TagHelper, type: :helper do
   before(:each) do
-    controller.request.host = 'www.alternative-domain.com'
-    controller.request.path = '/our_resources'
+    controller.request.host = "www.alternative-domain.com"
+    controller.request.path = "/our_resources"
   end
 
   after(:each) do
@@ -11,151 +13,179 @@ describe CanonicalRails::TagHelper, type: :helper do
     CanonicalRails.class_variable_set(:@@sym_allowed_parameters, nil)
   end
 
-  # Default behavior
-  describe 'w/ default config' do
-    it 'should infer the domain name by looking at the request' do
-      expect(helper.canonical_host).to eq 'www.alternative-domain.com'
+  describe "#trailing_slash_config" do
+    it "should return a slash if true" do
+      expect(helper.trailing_slash_config(true)).to eq("/")
     end
 
-    it 'should infer the port by looking at the request' do
+    it "should return a empty if false" do
+      expect(helper.trailing_slash_config(false)).to eq(nil)
+    end
+
+    context "when nil, it should call trailing_slash_if_needed" do
+      it "when not needed, it should return nil" do
+        expect_any_instance_of(described_class).to receive(:trailing_slash_if_needed).with(no_args).and_return(nil)
+        expect(helper.trailing_slash_config).to eq(nil)
+      end
+
+      it "when needed, it should return slash" do
+        expect_any_instance_of(described_class).to receive(:trailing_slash_if_needed).with(no_args).and_return("/")
+        expect(helper.trailing_slash_config).to eq("/")
+      end
+    end
+  end
+
+  # Default behavior
+  describe "w/ default config" do
+    it "should infer the domain name by looking at the request" do
+      expect(helper.canonical_host).to eq "www.alternative-domain.com"
+    end
+
+    it "should infer the port by looking at the request" do
       allow(controller.request).to receive(:port) { 3000 }
       expect(helper.canonical_port).to eq 3000
     end
 
-    it 'should return no allowed params' do
+    it "should return no allowed params" do
       expect(helper.allowed_params).to eq({})
     end
 
-    it 'should return a nil allowed query string' do
+    it "should return a nil allowed query string" do
       expect(helper.allowed_query_string).to be_nil
     end
 
-    it 'should infer the protocol by looking at the request' do
-      expect(helper.canonical_protocol).to eq 'http://'
+    it "should infer the protocol by looking at the request" do
+      expect(helper.canonical_protocol).to eq "http://"
     end
 
-    describe 'on a collection action' do
+    describe "on a collection action" do
       before(:each) do
-        controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
+        controller.request.path_parameters = { controller: "our_resources", action: "index" }
       end
 
-      it 'should assume we want a trailing slash' do
+      it "should assume we want a trailing slash" do
         expect(helper).to be_trailing_slash_needed
       end
 
-      it 'should output a canonical tag w/ trailing slash' do
-        expect(helper.canonical_href.last).to eq '/'
+      it "should output a canonical tag w/ trailing slash" do
+        expect(helper.canonical_href.last).to eq "/"
       end
 
       context "with force_trailing_slash set to false" do
-        it 'removes it' do
-          expect(helper.canonical_href(controller.request.host, controller.request.port, false).last).to_not eq '/'
+        it "removes it" do
+          expect(helper.canonical_href(controller.request.host, controller.request.port, false).last).to_not eq "/"
         end
       end
 
       context "with the html extension in the url" do
         before(:each) do
-          controller.request.path += '.html'
+          controller.request.path += ".html"
         end
 
         it "removes it" do
-          expect(helper.canonical_href).to_not include '.html'
+          expect(helper.canonical_href).to_not include ".html"
         end
       end
 
       context "with the htm extension in the url" do
         before(:each) do
-          controller.request.path += '.htm'
+          controller.request.path += ".htm"
         end
 
         it "removes it" do
-          expect(helper.canonical_href).to_not include '.htm'
+          expect(helper.canonical_href).to_not include ".htm"
         end
       end
 
       context "with the json extension in the url" do
         before(:each) do
-          controller.request.path += '.json'
+          controller.request.path += ".json"
         end
 
         it "removes it" do
-          expect(helper.canonical_href).to_not include '.json'
+          expect(helper.canonical_href).to_not include ".json"
         end
       end
     end
 
-    describe 'on a member action' do
+    describe "on a member action" do
       before(:each) do
-        controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
+        controller.request.path_parameters = { controller: "our_resources", action: "show" }
       end
 
-      it 'should refuse trailing slash' do
+      it "should refuse trailing slash" do
         expect(helper).to_not be_trailing_slash_needed
       end
 
-      it 'should output a canonical tag w/out trailing slash' do
-        expect(helper.canonical_href.last).to_not eq '/'
+      it "should output a canonical tag w/out trailing slash" do
+        expect(helper.canonical_href.last).to_not eq "/"
       end
 
       context "with force_trailing_slash set to true" do
-        it 'adds the trailing slash' do
-          expect(helper.canonical_href(controller.request.host, controller.request.port, true).last).to eq '/'
+        it "adds the trailing slash" do
+          expect(helper.canonical_href(controller.request.host, controller.request.port, true).last).to eq "/"
         end
       end
 
       context "with the html extension in the url" do
         before(:each) do
-          controller.request.path += '.html'
+          controller.request.path += ".html"
         end
 
         it "removes it" do
-          expect(helper.canonical_href).to_not include '.html'
+          expect(helper.canonical_href).to_not include ".html"
         end
       end
     end
   end
 
   # Customized behavior
-  describe 'w/ custom config' do
+  describe "w/ custom config" do
     before(:each) do
-      CanonicalRails.host = 'www.mywebstore.com'
+      CanonicalRails.host = "www.mywebstore.com"
       CanonicalRails.port = nil
     end
 
-    describe 'on both types of actions' do
-      it 'should take the domain from the config' do
-        expect(helper.canonical_host).to eq 'www.mywebstore.com'
+    describe "on both types of actions" do
+      it "should take the domain from the config" do
+        expect(helper.canonical_host).to eq "www.mywebstore.com"
       end
 
-      it 'should take the port from the config' do
+      it "should take the port from the config" do
         CanonicalRails.port = 3000
         expect(helper.canonical_port).to eq 3000
       end
     end
 
-    describe 'with host and port' do
+    describe "with host and port" do
       before(:each) do
         CanonicalRails.port = 3000
-        controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
+        controller.request.path_parameters = { controller: "our_resources", action: "show" }
       end
 
-      describe '#canonical_href' do
-        it 'uses specified host and protocol' do
-          expect(helper.canonical_href).to eq 'http://www.mywebstore.com:3000/our_resources'
+      describe "#canonical_path" do
+        it "has the correct path, and nothing else" do
+          expect(helper.canonical_path.to_s).to eq "/our_resources"
         end
       end
 
-      describe '#canonical_tag' do
-        it 'uses specified host and protocol' do
-          expect(helper.canonical_tag).to include 'http://www.mywebstore.com:3000/our_resources'
+      describe "#canonical_href" do
+        it "uses specified host and protocol" do
+          expect(helper.canonical_href).to eq "http://www.mywebstore.com:3000/our_resources"
+        end
+      end
+
+      describe "#canonical_tag" do
+        it "uses specified host and protocol" do
+          expect(helper.canonical_tag).to include "http://www.mywebstore.com:3000/our_resources"
         end
       end
     end
 
-    describe 'with a specified protocol' do
+    describe "with a specified protocol" do
       before(:each) do
-        CanonicalRails.protocol = 'https://'
-        controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
+        CanonicalRails.protocol = "https://"
+        controller.request.path_parameters = { controller: "our_resources", action: "show" }
         allow(controller.request).to receive(:port) { 443 }
       end
 
@@ -163,167 +193,190 @@ describe CanonicalRails::TagHelper, type: :helper do
         CanonicalRails.protocol = nil
       end
 
-      describe '#canonical_href' do
+      describe "#canonical_href" do
         subject { helper.canonical_href }
 
-        it 'uses specified protocol' do
-          is_expected.to eq 'https://www.mywebstore.com/our_resources'
+        it "uses specified protocol" do
+          is_expected.to eq "https://www.mywebstore.com/our_resources"
         end
       end
 
-      describe '#canonical_tag' do
+      describe "#canonical_tag" do
         subject { helper.canonical_tag }
 
-        it 'uses specified protocol' do
-          is_expected.to include 'https://'
+        it "uses specified protocol" do
+          is_expected.to include "https://"
         end
       end
     end
 
-    describe 'with parameters' do
+    describe "with parameters" do
       let(:params) do
-        ActionController::Parameters.new 'i-will' => 'kill-your-seo',
-                                         'page' => '5',
-                                         'keywords' => '"here be dragons"',
-                                         'search' => { 'super' => 'special' }
+        ActionController::Parameters.new "i-will" => "kill-your-seo",
+                                         "page" => "5",
+                                         "keywords" => '"here be dragons"',
+                                         "search" => { "super" => "special" }
       end
 
       before(:each) do
-        CanonicalRails.allowed_parameters = ['page', 'keywords', 'search']
+        CanonicalRails.allowed_parameters = %w[page keywords search]
         allow_any_instance_of(controller.class).to receive(:params).and_return(params)
-        controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
+        controller.request.path_parameters = { controller: "our_resources", action: "index" }
       end
 
-      it 'should not include random params' do
-        expect(helper.allowed_params['i-will']).to be_nil
+      it "should not include random params" do
+        expect(helper.allowed_params["i-will"]).to be_nil
       end
 
-      it 'should include allowed params' do
-        expect(helper.allowed_params['page']).to eq '5'
-        expect(helper.allowed_params['keywords']).to eq '"here be dragons"'
+      it "should include allowed params" do
+        expect(helper.allowed_params["page"]).to eq "5"
+        expect(helper.allowed_params["keywords"]).to eq '"here be dragons"'
       end
 
-      it 'should escape allowed params properly' do
-        expect(helper.allowed_query_string).to eq('?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special').
-                                            or(eq('?page=5&keywords=%22here+be+dragons%22&search[super]=special'))
+      describe "#canonical_path" do
+        it "has the correct path, and query string" do
+          expect(helper.trailing_slash_config(nil)).to eq("/")
+          expect(helper.canonical_path).to eq("/our_resources/?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special")
+          .or(eq("/our_resources/?page=5&keywords=%22here+be+dragons%22&search[super]=special"))
+        end
+
+        it "allows forcing the trailing slash" do
+          expect(helper.canonical_path(false)).to eq("/our_resources?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special")
+          .or(eq("/our_resources?page=5&keywords=%22here+be+dragons%22&search[super]=special"))
+
+          expect(helper.canonical_path(true)).to eq("/our_resources/?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special")
+          .or(eq("/our_resources/?page=5&keywords=%22here+be+dragons%22&search[super]=special"))
+        end
       end
 
-      it 'should output allowed params using proper syntax (?key=value&key=value)' do
+      describe "#allowed_query_string" do
+        it "should escape allowed params properly" do
+          expect(helper.allowed_query_string).to eq("?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special")
+            .or(eq("?page=5&keywords=%22here+be+dragons%22&search[super]=special"))
+        end
+
+        it "should optionally return the query string without the prefixed questionmark" do
+          expect(helper.allowed_query_string(false)).to eq("page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special")
+            .or(eq("page=5&keywords=%22here+be+dragons%22&search[super]=special"))
+        end
+      end
+
+      it "should output allowed params using proper syntax (?key=value&key=value)" do
         # https://github.com/rack/rack/issues/792
         # this will produce different results depending on Ruby version
-        expect(helper.canonical_tag).to eq('<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search[super]=special" rel="canonical" />').
-                                    or(eq('<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special" rel="canonical" />'))
+        expect(helper.canonical_tag).to eq('<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search[super]=special" rel="canonical" />')
+          .or(eq('<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special" rel="canonical" />'))
       end
 
-      describe 'on a collection action' do
+      describe "on a collection action" do
         before(:each) do
-          controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
+          controller.request.path_parameters = { controller: "our_resources", action: "index" }
         end
 
-        it 'should output a canonical tag w/ trailing slash' do
-          expect(helper.canonical_href).to include '/?'
+        it "should output a canonical tag w/ trailing slash" do
+          expect(helper.canonical_href).to include "/?"
         end
       end
 
-      describe 'on a member action' do
+      describe "on a member action" do
         before(:each) do
-          controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
+          controller.request.path_parameters = { controller: "our_resources", action: "show" }
         end
-        it 'should output a canonical tag w/out trailing slash' do
-          expect(helper.canonical_href).to_not include '/?'
+        it "should output a canonical tag w/out trailing slash" do
+          expect(helper.canonical_href).to_not include "/?"
         end
       end
     end
 
-    describe 'with the old config.whitelisted_parameters' do
+    describe "with the old config.whitelisted_parameters" do
       before do
-        CanonicalRails.whitelisted_parameters = ['page']
+        CanonicalRails.whitelisted_parameters = ["page"]
         allow_any_instance_of(controller.class)
           .to receive(:params)
-          .and_return(ActionController::Parameters.new('i-will' => 'kill-your-seo', 'page' => '5'))
-        controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
+          .and_return(ActionController::Parameters.new("i-will" => "kill-your-seo", "page" => "5"))
+        controller.request.path_parameters = { controller: "our_resources", action: "index" }
       end
 
       after do
         CanonicalRails.class_variable_set(:@@sym_whitelisted_parameters, nil)
       end
 
-      it 'emits a deprecation warning and keeps working' do
+      it "emits a deprecation warning and keeps working" do
         expect(CanonicalRails::Deprecation).to receive(:warn).once
-        expect(helper.allowed_params['page']).to eq '5'
-        expect(helper.allowed_params['i-will']).to be_nil
+        expect(helper.allowed_params["page"]).to eq "5"
+        expect(helper.allowed_params["i-will"]).to be_nil
       end
     end
   end
 
-  describe 'when host is specified' do
+  describe "when host is specified" do
     before(:each) do
-      controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
+      controller.request.path_parameters = { controller: "our_resources", action: "show" }
     end
 
-    describe '#canonical_href' do
-      subject { helper.canonical_href('www.foobar.net') }
+    describe "#canonical_href" do
+      subject { helper.canonical_href("www.foobar.net") }
 
-      it 'uses provided host' do
-        is_expected.to eq 'http://www.foobar.net/our_resources'
+      it "uses provided host" do
+        is_expected.to eq "http://www.foobar.net/our_resources"
       end
     end
 
-    describe '#canonical_tag' do
-      subject { helper.canonical_tag('www.foobar.net') }
+    describe "#canonical_tag" do
+      subject { helper.canonical_tag("www.foobar.net") }
 
-      it 'uses provided host' do
-        is_expected.to include 'www.foobar.net'
+      it "uses provided host" do
+        is_expected.to include "www.foobar.net"
       end
     end
   end
 
-  describe 'when host and port are specified' do
+  describe "when host and port are specified" do
     before(:each) do
-      controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
+      controller.request.path_parameters = { controller: "our_resources", action: "show" }
     end
 
-    describe '#canonical_href' do
-      subject { helper.canonical_href('www.foobar.net', 3000) }
+    describe "#canonical_href" do
+      subject { helper.canonical_href("www.foobar.net", 3000) }
 
-      it 'uses provided host' do
-        is_expected.to eq 'http://www.foobar.net:3000/our_resources'
+      it "uses provided host" do
+        is_expected.to eq "http://www.foobar.net:3000/our_resources"
       end
     end
 
-    describe '#canonical_tag' do
-      subject { helper.canonical_tag('www.foobar.net', 3000) }
+    describe "#canonical_tag" do
+      subject { helper.canonical_tag("www.foobar.net", 3000) }
 
-      it 'uses provided host' do
-        is_expected.to include 'www.foobar.net:3000'
+      it "uses provided host" do
+        is_expected.to include "www.foobar.net:3000"
       end
     end
   end
 
-  describe 'when opengraph url tag is turned on' do
+  describe "when opengraph url tag is turned on" do
     before(:each) do
       CanonicalRails.opengraph_url = true
-      controller.request.path_parameters = { controller: 'our_resources', action: 'show' }
+      controller.request.path_parameters = { controller: "our_resources", action: "show" }
     end
 
-    describe '#canonical_tag' do
+    describe "#canonical_tag" do
       subject { helper.canonical_tag }
 
-      it 'outputs an og:url meta tag' do
+      it "outputs an og:url meta tag" do
         is_expected.to include 'property="og:url"'
       end
     end
   end
 
-  describe 'when request action not present' do
+  describe "when request action not present" do
     # Occurs if middleware tries to render a controller action before having gone through the ActionDispatch router
 
-    describe 'on a collection action' do
+    describe "on a collection action" do
       before(:each) do
         controller.request.path_parameters = {}
       end
 
-      it 'should assume we dont want a trailing slash' do
+      it "should assume we dont want a trailing slash" do
         expect(helper).not_to be_trailing_slash_needed
       end
     end
