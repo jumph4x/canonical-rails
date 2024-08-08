@@ -13,6 +13,28 @@ describe CanonicalRails::TagHelper, type: :helper do
     CanonicalRails.class_variable_set(:@@sym_allowed_parameters, nil)
   end
 
+  describe "#trailing_slash_config" do
+    it "should return a slash if true" do
+      expect(helper.trailing_slash_config(true)).to eq("/")
+    end
+
+    it "should return a empty if false" do
+      expect(helper.trailing_slash_config(false)).to eq(nil)
+    end
+
+    context "when nil, it should call trailing_slash_if_needed" do
+      it "when not needed, it should return nil" do
+        expect_any_instance_of(described_class).to receive(:trailing_slash_if_needed).with(no_args).and_return(nil)
+        expect(helper.trailing_slash_config).to eq(nil)
+      end
+
+      it "when needed, it should return slash" do
+        expect_any_instance_of(described_class).to receive(:trailing_slash_if_needed).with(no_args).and_return("/")
+        expect(helper.trailing_slash_config).to eq("/")
+      end
+    end
+  end
+
   # Default behavior
   describe "w/ default config" do
     it "should infer the domain name by looking at the request" do
@@ -141,6 +163,12 @@ describe CanonicalRails::TagHelper, type: :helper do
         controller.request.path_parameters = { controller: "our_resources", action: "show" }
       end
 
+      describe "#canonical_path" do
+        it "has the correct path, and nothing else" do
+          expect(helper.canonical_path.to_s).to eq "/our_resources"
+        end
+      end
+
       describe "#canonical_href" do
         it "uses specified host and protocol" do
           expect(helper.canonical_href).to eq "http://www.mywebstore.com:3000/our_resources"
@@ -205,9 +233,32 @@ describe CanonicalRails::TagHelper, type: :helper do
         expect(helper.allowed_params["keywords"]).to eq '"here be dragons"'
       end
 
-      it "should escape allowed params properly" do
-        expect(helper.allowed_query_string).to eq("?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special")
-          .or(eq("?page=5&keywords=%22here+be+dragons%22&search[super]=special"))
+      describe "#canonical_path" do
+        it "has the correct path, and query string" do
+          expect(helper.trailing_slash_config(nil)).to eq("/")
+          expect(helper.canonical_path).to eq("/our_resources/?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special")
+          .or(eq("/our_resources/?page=5&keywords=%22here+be+dragons%22&search[super]=special"))
+        end
+
+        it "allows forcing the trailing slash" do
+          expect(helper.canonical_path(false)).to eq("/our_resources?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special")
+          .or(eq("/our_resources?page=5&keywords=%22here+be+dragons%22&search[super]=special"))
+
+          expect(helper.canonical_path(true)).to eq("/our_resources/?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special")
+          .or(eq("/our_resources/?page=5&keywords=%22here+be+dragons%22&search[super]=special"))
+        end
+      end
+
+      describe "#allowed_query_string" do
+        it "should escape allowed params properly" do
+          expect(helper.allowed_query_string).to eq("?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special")
+            .or(eq("?page=5&keywords=%22here+be+dragons%22&search[super]=special"))
+        end
+
+        it "should optionally return the query string without the prefixed questionmark" do
+          expect(helper.allowed_query_string(false)).to eq("page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special")
+            .or(eq("page=5&keywords=%22here+be+dragons%22&search[super]=special"))
+        end
       end
 
       it "should output allowed params using proper syntax (?key=value&key=value)" do
