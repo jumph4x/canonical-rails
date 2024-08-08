@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module CanonicalRails
   module TagHelper
     def trailing_slash_needed?
@@ -8,14 +9,14 @@ module CanonicalRails
     # Leave force_trailing_slash as nil to get the original behavior of trailing_slash_if_needed
     def trailing_slash_config(force_trailing_slash = nil)
       if force_trailing_slash
-        "/"
+        '/'
       elsif force_trailing_slash.nil?
         trailing_slash_if_needed
       end
     end
 
     def trailing_slash_if_needed
-      "/" if trailing_slash_needed?
+      '/' if trailing_slash_needed?
     end
 
     def path_without_extension
@@ -49,9 +50,7 @@ module CanonicalRails
     def canonical_tag(host = canonical_host, port = canonical_port, force_trailing_slash = nil)
       canonical_url = canonical_href(host, port, force_trailing_slash)
       capture do
-        if CanonicalRails.opengraph_url
-          concat tag(:meta, property: 'og:url', content: canonical_url)
-        end
+        concat tag(:meta, property: 'og:url', content: canonical_url) if CanonicalRails.opengraph_url
         concat tag(:link, href: canonical_url, rel: :canonical)
       end
     end
@@ -75,7 +74,7 @@ module CanonicalRails
       # Rack 1.6.0 has it
       # https://github.com/rack/rack/blob/65a7104b6b3e9ecd8f33c63a478ab9a33a103507/test/spec_utils.rb#L251
       parameters = allowed_params
-      "?" + Rack::Utils.build_nested_query(convert_numeric_params(parameters)) if parameters.present?
+      "?#{Rack::Utils.build_nested_query(convert_numeric_params(parameters))}" if parameters.present?
     end
 
     private

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
-require "canonical-rails/engine"
-require "canonical-rails/deprecation"
+
+require 'canonical-rails/engine'
+require 'canonical-rails/deprecation'
 
 module CanonicalRails
-
   # Default way to setup CanonicalRails. Run `rails g canonical_rails:install` to create
   # a fresh initializer with all configuration values.
   #
@@ -36,15 +36,15 @@ module CanonicalRails
   @@opengraph_url = false
 
   def self.sym_collection_actions
-    @@sym_collection_actions ||= self.collection_actions.map(&:to_sym)
+    @@sym_collection_actions ||= collection_actions.map(&:to_sym)
   end
 
   def self.sym_allowed_parameters
-    @@sym_allowed_parameters ||= if self.whitelisted_parameters.empty?
-      self.allowed_parameters.map(&:to_sym)
-    else
-      CanonicalRails::Deprecation.warn('config.whitelisted_parameters is deprecated, please use config.allowed_parameters instead.')
-      self.whitelisted_parameters.map(&:to_sym)
-    end
+    @@sym_allowed_parameters ||= if whitelisted_parameters.empty?
+                                   allowed_parameters.map(&:to_sym)
+                                 else
+                                   CanonicalRails::Deprecation.warn('config.whitelisted_parameters is deprecated, please use config.allowed_parameters instead.')
+                                   whitelisted_parameters.map(&:to_sym)
+                                 end
   end
 end

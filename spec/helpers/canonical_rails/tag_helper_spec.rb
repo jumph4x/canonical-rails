@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 
 describe CanonicalRails::TagHelper, type: :helper do
@@ -48,38 +49,38 @@ describe CanonicalRails::TagHelper, type: :helper do
         expect(helper.canonical_href.last).to eq '/'
       end
 
-      context "with force_trailing_slash set to false" do
+      context 'with force_trailing_slash set to false' do
         it 'removes it' do
           expect(helper.canonical_href(controller.request.host, controller.request.port, false).last).to_not eq '/'
         end
       end
 
-      context "with the html extension in the url" do
+      context 'with the html extension in the url' do
         before(:each) do
           controller.request.path += '.html'
         end
 
-        it "removes it" do
+        it 'removes it' do
           expect(helper.canonical_href).to_not include '.html'
         end
       end
 
-      context "with the htm extension in the url" do
+      context 'with the htm extension in the url' do
         before(:each) do
           controller.request.path += '.htm'
         end
 
-        it "removes it" do
+        it 'removes it' do
           expect(helper.canonical_href).to_not include '.htm'
         end
       end
 
-      context "with the json extension in the url" do
+      context 'with the json extension in the url' do
         before(:each) do
           controller.request.path += '.json'
         end
 
-        it "removes it" do
+        it 'removes it' do
           expect(helper.canonical_href).to_not include '.json'
         end
       end
@@ -98,18 +99,18 @@ describe CanonicalRails::TagHelper, type: :helper do
         expect(helper.canonical_href.last).to_not eq '/'
       end
 
-      context "with force_trailing_slash set to true" do
+      context 'with force_trailing_slash set to true' do
         it 'adds the trailing slash' do
           expect(helper.canonical_href(controller.request.host, controller.request.port, true).last).to eq '/'
         end
       end
 
-      context "with the html extension in the url" do
+      context 'with the html extension in the url' do
         before(:each) do
           controller.request.path += '.html'
         end
 
-        it "removes it" do
+        it 'removes it' do
           expect(helper.canonical_href).to_not include '.html'
         end
       end
@@ -190,7 +191,7 @@ describe CanonicalRails::TagHelper, type: :helper do
       end
 
       before(:each) do
-        CanonicalRails.allowed_parameters = ['page', 'keywords', 'search']
+        CanonicalRails.allowed_parameters = %w[page keywords search]
         allow_any_instance_of(controller.class).to receive(:params).and_return(params)
         controller.request.path_parameters = { controller: 'our_resources', action: 'index' }
       end
@@ -205,15 +206,15 @@ describe CanonicalRails::TagHelper, type: :helper do
       end
 
       it 'should escape allowed params properly' do
-        expect(helper.allowed_query_string).to eq('?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special').
-                                            or(eq('?page=5&keywords=%22here+be+dragons%22&search[super]=special'))
+        expect(helper.allowed_query_string).to eq('?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special')
+          .or(eq('?page=5&keywords=%22here+be+dragons%22&search[super]=special'))
       end
 
       it 'should output allowed params using proper syntax (?key=value&key=value)' do
         # https://github.com/rack/rack/issues/792
         # this will produce different results depending on Ruby version
-        expect(helper.canonical_tag).to eq('<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search[super]=special" rel="canonical" />').
-                                    or(eq('<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special" rel="canonical" />'))
+        expect(helper.canonical_tag).to eq('<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search[super]=special" rel="canonical" />')
+          .or(eq('<link href="http://www.mywebstore.com/our_resources/?page=5&keywords=%22here+be+dragons%22&search%5Bsuper%5D=special" rel="canonical" />'))
       end
 
       describe 'on a collection action' do

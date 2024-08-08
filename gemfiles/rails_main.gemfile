@@ -2,11 +2,6 @@
 
 source "http://rubygems.org"
 
-gem "jquery-rails"
-gem "sqlite3"
-
-%w[actionmailer activerecord railties].each do |dep|
-  gem dep, github: "rails", branch: "main"
-end
+gem "rails", github: "rails/rails", branch: "main"
 
 gemspec path: "../"
