@@ -16,9 +16,9 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency 'actionview', '>= 4.1', '<= 7.2'
+  s.add_dependency 'actionview', '>= 4.1', '< 7.3'
 
-  s.add_development_dependency 'actionpack', '>= 4.1', '<= 7.1'
+  s.add_development_dependency 'actionpack', '>= 4.1', '< 7.3'
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'rspec-rails', '~> 4.0.1'
   s.add_development_dependency 'pry'
